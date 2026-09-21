@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://du4a84bgsykvi"]
+
+[ext_resource type="PackedScene" uid="uid://bd7pjqr4pwqw1" path="res://2D (Legacy Gridlock)/Scenes/Maps/map_1.tscn" id="1_tlcug"]
+[ext_resource type="PackedScene" uid="uid://cekggi2w4pp7t" path="res://2D (Legacy Gridlock)/Scenes/Player/player.tscn" id="2_4dpyx"]
+[ext_resource type="PackedScene" uid="uid://dsfauitsglu5d" path="res://2D (Legacy Gridlock)/Scenes/NPCs/npc_vehicle.tscn" id="3_3mqfk"]
+
+[sub_resource type="Curve2D" id="Curve2D_3mqfk"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1075.9999, 697.886, 0, 0, 0, 0, 1074.9934, 10.81833, 0, 0, 0, 0, 397.65958, 11.846874, 0, 0, 0, 0, 395.6467, -381.05704, 0, 0, 0, 0, -16, -379, 0, 0, 0, 0, -17.999998, 697.886, 0, 0, 0, 0, 1075.9999, 697.886)
+}
+point_count = 7
+
+[node name="Level-1" type="Node2D" unique_id=1923723529]
+
+[node name="Map-1" parent="." unique_id=997656711 instance=ExtResource("1_tlcug")]
+
+[node name="Player" parent="." unique_id=459030394 instance=ExtResource("2_4dpyx")]
+position = Vector2(15.999999, 94.99999)
+
+[node name="NPC-Vehicle" parent="." unique_id=384677999 node_paths=PackedStringArray("path_node") instance=ExtResource("3_3mqfk")]
+position = Vector2(1076, 611)
+path_node = NodePath("../NPC-Path/Path2D")
+
+[node name="NPC-Vehicle2" parent="." unique_id=524918971 node_paths=PackedStringArray("path_node") instance=ExtResource("3_3mqfk")]
+position = Vector2(1063, 636)
+path_node = NodePath("../NPC-Path/Path2D")
+
+[node name="NPC-Path" type="Node2D" parent="." unique_id=70343914]
+
+[node name="Path2D" type="Path2D" parent="NPC-Path" unique_id=2013192811]
+position = Vector2(6.884825, -10.518098)
+scale = Vector2(0.9936015, 0.97224784)
+curve = SubResource("Curve2D_3mqfk")

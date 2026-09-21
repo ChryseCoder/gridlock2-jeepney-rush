@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://t5staimur1qn"]
+
+[ext_resource type="Texture2D" uid="uid://in3bf3ejouxo" path="res://3D/Assets/Images/Sprites/Player/m3gtr.png" id="1_6ykwk"]
+[ext_resource type="Script" uid="uid://b7i51g7fqa0d5" path="res://3D/Scripts/Player/player3D.gd" id="1_td412"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_glk7u"]
+size = Vector3(0.97180176, 0.5784302, 1.7414551)
+
+[node name="M3" type="CharacterBody3D" unique_id=749367096]
+script = ExtResource("1_td412")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=412699491]
+transform = Transform3D(0.14, 0, 0, 0, -6.119594e-09, 0.14, 0, -0.14, -6.119594e-09, 0, 0.55, 0)
+texture = ExtResource("1_6ykwk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=923896151]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0048217773, 0.3221863, 0.00012207031)
+shape = SubResource("BoxShape3D_glk7u")

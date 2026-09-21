@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cekggi2w4pp7t"]
+
+[ext_resource type="Script" uid="uid://dh800boefypnk" path="res://2D (Legacy Gridlock)/Scripts/Player/player-from-gridlock-1.gd" id="1_a3d8c"]
+[ext_resource type="Texture2D" uid="uid://dh53l36as1qda" path="res://2D (Legacy Gridlock)/Assets/Images/Sprites/Player/jeep.png" id="1_uvnfx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a3d8c"]
+radius = 39.999996
+height = 299.99997
+
+[node name="Player" type="CharacterBody2D" unique_id=459030394 groups=["Player"]]
+scale = Vector2(0.1, 0.1)
+script = ExtResource("1_a3d8c")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=821301291]
+texture = ExtResource("1_uvnfx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1123944264]
+shape = SubResource("CapsuleShape2D_a3d8c")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=101682680]
+zoom = Vector2(3, 3)
+rotation_smoothing_enabled = true
+drag_vertical_enabled = true

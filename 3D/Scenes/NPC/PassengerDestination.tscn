@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://f6f7jbs7ltdp"]
+
+[ext_resource type="Script" uid="uid://b7cgdpv4hdrle" path="res://3D/Scripts/NPC/passenger_destination.gd" id="1_ujwv4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_glk7u"]
+size = Vector3(1.9909363, 0.46557617, 1.9911156)
+
+[node name="Destination" type="Area3D" unique_id=1224230168]
+script = ExtResource("1_ujwv4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=146523174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00044250488, 0.2672119, 0.005273819)
+shape = SubResource("BoxShape3D_glk7u")
+
+[node name="EntryPoint" type="Marker3D" parent="." unique_id=394973297]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5838654, 0, 0)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

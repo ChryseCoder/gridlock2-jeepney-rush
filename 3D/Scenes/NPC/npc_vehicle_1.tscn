@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://cylojmimk27we"]
+
+[ext_resource type="Script" uid="uid://do1l8vcwcmre4" path="res://3D/Scripts/NPC/npc_vehicle_1.gd" id="1_f6nry"]
+[ext_resource type="Texture2D" uid="uid://covr8dbovi2bf" path="res://2D (Legacy Gridlock)/Assets/Images/Sprites/Vehicles/sedan_red.png" id="2_ugy1s"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a2ya2"]
+size = Vector3(0.24761963, 0.17708588, 0.5288696)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kgq47"]
+
+[node name="Npc_Vehicle1" type="CharacterBody3D" unique_id=1975212002 groups=["npc_vehicles"]]
+transform = Transform3D(3.2, 0, 0, 0, 3.2, 0, 0, 0, 3.2, 0, 0, 0)
+axis_lock_linear_y = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("1_f6nry")
+max_speed = 2.0
+acceleration = 2.0
+braking_force = 5.0
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1139316289]
+transform = Transform3D(1.3113416e-07, -1, -4.371139e-08, -3.821371e-15, 4.371139e-08, -1, 1, 1.3113416e-07, 1.9106855e-15, 0, 0, 0)
+texture = ExtResource("2_ugy1s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=211373236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001, 0.045, 0)
+shape = SubResource("BoxShape3D_a2ya2")
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="." unique_id=1231669223]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.5, 0, 0.045, 0)
+shape = SubResource("BoxShape3D_kgq47")
+target_position = Vector3(0, 0.1, -1.5)

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dsfauitsglu5d"]
+
+[ext_resource type="Texture2D" uid="uid://cmhnniogumqpm" path="res://2D (Legacy Gridlock)/Assets/Images/Sprites/Vehicles/seda_blue.png" id="1_452bc"]
+[ext_resource type="Script" uid="uid://c7je53p5uwf8j" path="res://2D (Legacy Gridlock)/Scripts/NPC/Vehicle/npc_scriptGemini.gd" id="1_yue66"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yue66"]
+height = 49.999996
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_glk7u"]
+
+[node name="NPC-Vehicle" type="CharacterBody2D" unique_id=384677999]
+scale = Vector2(0.4, 0.4)
+script = ExtResource("1_yue66")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2054198757]
+rotation = 1.5707964
+texture = ExtResource("1_452bc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=983819320]
+shape = SubResource("CapsuleShape2D_yue66")
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="." unique_id=1100557218]
+position = Vector2(0, 14.999997)
+shape = SubResource("RectangleShape2D_glk7u")
+target_position = Vector2(0, -99.999985)

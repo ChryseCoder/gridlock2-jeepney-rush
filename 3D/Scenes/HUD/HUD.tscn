@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://bptwoph4tgtkc"]
+
+[ext_resource type="Texture2D" uid="uid://s4433wkmckty" path="res://Assets/Hud/speedometer2.png" id="1_m73b5"]
+[ext_resource type="Script" uid="uid://84eqe1g8ccgk" path="res://Scripts/Hud/hud.gd" id="1_w2lq0"]
+[ext_resource type="Texture2D" uid="uid://cdb302nnc1jdm" path="res://Assets/Hud/fuel.png" id="2_82l25"]
+[ext_resource type="Texture2D" uid="uid://dpygj4f3eaewn" path="res://Assets/Hud/needlelong1.png" id="3_mvrxd"]
+[ext_resource type="Texture2D" uid="uid://b7863i7xac52y" path="res://Assets/Hud/needleshort3.png" id="4_w2lq0"]
+
+[node name="Hud" type="Control" unique_id=146529280]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w2lq0")
+
+[node name="Speedometer" type="TextureRect" parent="." unique_id=1874969201]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -263.0
+offset_top = -242.0
+offset_right = -1.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("1_m73b5")
+expand_mode = 1
+
+[node name="Fuel" type="TextureRect" parent="." unique_id=433033272]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -394.0
+offset_top = -125.0
+offset_right = -262.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("2_82l25")
+expand_mode = 1
+
+[node name="Needle_Speedometer" type="TextureRect" parent="." unique_id=776622506]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -135.0
+offset_top = -230.0
+offset_right = -129.0
+offset_bottom = -119.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(3, 111)
+texture = ExtResource("3_mvrxd")
+expand_mode = 1
+
+[node name="Needle_Fuel" type="TextureRect" parent="." unique_id=312844343]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -331.0
+offset_top = -105.0
+offset_right = -325.0
+offset_bottom = -60.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(3, 45)
+texture = ExtResource("4_w2lq0")
+expand_mode = 1
+
+[node name="Gear" type="RichTextLabel" parent="." unique_id=2112129474]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -145.0
+offset_top = -56.0
+offset_right = -115.0
+offset_bottom = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+horizontal_alignment = 1
+vertical_alignment = 1
