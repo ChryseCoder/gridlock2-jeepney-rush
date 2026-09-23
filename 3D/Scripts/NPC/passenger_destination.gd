@@ -2,13 +2,15 @@ extends Area3D
 
 @onready var entry_point: Marker3D = $EntryPoint
 
+@export var destination_id: StringName
+
 var nearby_jeepney: CharacterBody3D = null
 
 func _physics_process(_delta):
 	if nearby_jeepney != null:
 		if nearby_jeepney.velocity.length() <= 0.1:
 			print("Jeepney stopped at destination!")
-			nearby_jeepney.release_passenger(self)
+			nearby_jeepney.release_passengers(self)
 
 			# Prevent repeated releases while the Jeepney stays inside.
 			nearby_jeepney = null

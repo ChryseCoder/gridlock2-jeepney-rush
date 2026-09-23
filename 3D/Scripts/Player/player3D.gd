@@ -22,6 +22,7 @@ extends CharacterBody3D
 @export_group("Passenger")
 @onready var boarding_point: Marker3D = $BoardingPoint
 @export var passenger_scene: PackedScene
+var passengers: Array[Dictionary] = []
 var passenger_count: int = 0
 
 var current_gear: int = 1
@@ -125,21 +126,53 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-func add_passenger():
-	passenger_count += 1
-	print("Passenger boarded! Total passengers: ", passenger_count)
+func add_passenger(destination_id: StringName, appearance: Dictionary):
+	passengers.append({
+		"destination_id": destination_id,
+		"appearance": appearance
+	})
 
-func release_passenger(destination: Node3D):
-	if passenger_count <= 0:
+	passenger_count = passengers.size()
+
+	print("Passenger boarded for: ", destination_id)
+	print("Total passengers: ", passenger_count)
+
+
+var is_releasing_passengers: bool = false
+
+func release_passengers(destination: Node3D):
+	if is_releasing_passengers:
 		return
 
-	var passenger = passenger_scene.instantiate()
+	is_releasing_passengers = true
 
-	get_tree().current_scene.add_child(passenger)
+	var index := 0
 
-	passenger.global_position = $PassengerExitPoint.global_position
-	passenger.walk_to_destination(destination.entry_point.global_position)
+	while index < passengers.size():
+		var passenger_data = passengers[index]
 
-	passenger_count -= 1
+		if passenger_data["destination_id"] == destination.destination_id:
+			var passenger = passenger_scene.instantiate()
+			get_tree().current_scene.add_child(passenger)
 
-	print("Passenger released! Remaining passengers: ", passenger_count)
+			passenger.global_position = $PassengerExitPoint.global_position
+
+			passenger.get_node("PassengerVisual").set_appearance(
+				passenger_data["appearance"]
+			)
+
+			passenger.walk_to_destination(
+				destination.entry_point.global_position
+			)
+
+			passengers.remove_at(index)
+			passenger_count = passengers.size()
+
+			print("Passenger released! Remaining passengers: ", passenger_count)
+
+			await get_tree().create_timer(0.6).timeout
+
+		else:
+			index += 1
+
+	is_releasing_passengers = false

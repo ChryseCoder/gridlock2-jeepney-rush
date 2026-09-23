@@ -37,6 +37,17 @@ func randomize_appearance():
 	outfit.sprite_frames = outfit_options.pick_random()
 	hair.sprite_frames = hair_options.pick_random()
 
+func get_appearance() -> Dictionary:
+	return {
+		"body": body.sprite_frames,
+		"outfit": outfit.sprite_frames,
+		"hair": hair.sprite_frames
+	}
+
+func set_appearance(data: Dictionary):
+	body.sprite_frames = data["body"]
+	outfit.sprite_frames = data["outfit"]
+	hair.sprite_frames = data["hair"]
 
 func play_animation(animation_name: StringName):
 	if body.animation != animation_name:
