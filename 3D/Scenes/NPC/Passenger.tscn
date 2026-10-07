@@ -2,12 +2,22 @@
 
 [ext_resource type="Script" uid="uid://h7dn3lgtfmw3" path="res://3D/Scripts/NPC/passenger.gd" id="1_h21el"]
 [ext_resource type="PackedScene" uid="uid://clauhdhj5rqa6" path="res://3D/Scenes/NPC/PassengerVisual.tscn" id="2_licpm"]
+[ext_resource type="Script" uid="uid://cpgkbsuwdhxlt" path="res://3D/Scripts/Environment/marker_visual.gd" id="3_iwn73"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dtowj"]
-size = Vector3(0.16447449, 0.023330688, 0.30747986)
+size = Vector3(0.08866644, 0.023330688, 0.17874694)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_icvhv"]
 size = Vector3(1.2662048, 0.6098633, 1.2015886)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_glk7u"]
+top_radius = 0.19238281
+bottom_radius = 0.19238281
+height = 0.08085632
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_56tan"]
+transparency = 1
+albedo_color = Color(0.53333336, 0.95686275, 0.24313726, 0.6392157)
 
 [node name="Passenger" type="CharacterBody3D" unique_id=2097775546]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
@@ -16,7 +26,7 @@ script = ExtResource("1_h21el")
 [node name="PassengerVisual" parent="." unique_id=419753733 instance=ExtResource("2_licpm")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=979340651]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001, 0.001411438, 0.004)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0009395361, 0.001411438, 0.03315061)
 shape = SubResource("BoxShape3D_dtowj")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1907107791]
@@ -24,6 +34,12 @@ shape = SubResource("BoxShape3D_dtowj")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=447792359]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0038934946, 0.19506836, -0.003812492)
 shape = SubResource("BoxShape3D_icvhv")
+
+[node name="MarkerVisual" type="MeshInstance3D" parent="." unique_id=303384146]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00049591064, 0)
+mesh = SubResource("CylinderMesh_glk7u")
+surface_material_override/0 = SubResource("StandardMaterial3D_56tan")
+script = ExtResource("3_iwn73")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

@@ -20,6 +20,7 @@ var is_overtaking: bool = false
 var overtake_timer: float = 0.0
 var traffic_light_stop: bool = false
 var traffic_queue_stop: bool = false
+var locked_y: float
 
 enum ObstacleType {
 	NONE,
@@ -28,6 +29,8 @@ enum ObstacleType {
 }
 
 func _ready():
+	locked_y = global_position.y
+	
 	if path_node and path_node.curve:
 		path_points = path_node.curve.get_baked_points()
 		for i in range(path_points.size()):
@@ -143,6 +146,7 @@ func _physics_process(delta):
 	velocity.y = 0.0 
 	
 	move_and_slide()
+	global_position.y = locked_y
 
 func check_for_obstacles() -> ObstacleType:
 	if not shape_cast:

@@ -4,11 +4,17 @@ extends Area3D
 
 @export var destination_id: StringName
 
+@onready var marker_visual = $MarkerVisual
+
 var nearby_jeepney: CharacterBody3D = null
+
+func _ready():
+	add_to_group("PassengerDestination")
 
 func _physics_process(_delta):
 	if nearby_jeepney != null:
 		if nearby_jeepney.velocity.length() <= 0.1:
+			marker_visual.hide()
 			print("Jeepney stopped at destination!")
 			nearby_jeepney.release_passengers(self)
 

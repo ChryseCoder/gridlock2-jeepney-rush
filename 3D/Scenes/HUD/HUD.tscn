@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://cdb302nnc1jdm" path="res://Assets/Hud/fuel.png" id="2_82l25"]
 [ext_resource type="Texture2D" uid="uid://dpygj4f3eaewn" path="res://Assets/Hud/needlelong1.png" id="3_mvrxd"]
 [ext_resource type="Texture2D" uid="uid://b7863i7xac52y" path="res://Assets/Hud/needleshort3.png" id="4_w2lq0"]
+[ext_resource type="FontFile" uid="uid://ctrc8f8dqmfdq" path="res://Assets/Hud/E1234-Regular.ttf" id="6_0mwkw"]
+[ext_resource type="Texture2D" uid="uid://ctipbhbr2ls0s" path="res://Assets/Hud/watch.png" id="6_ho05o"]
+[ext_resource type="Texture2D" uid="uid://d1vojsohvhj77" path="res://Assets/Hud/pointershaft1.png" id="6_u6iao"]
 
 [node name="Hud" type="Control" unique_id=146529280]
 layout_mode = 3
@@ -79,6 +82,23 @@ pivot_offset = Vector2(3, 45)
 texture = ExtResource("4_w2lq0")
 expand_mode = 1
 
+[node name="Pointer" type="TextureRect" parent="." unique_id=1861409675]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -141.0
+offset_top = -128.0
+offset_right = -123.0
+offset_bottom = -111.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(5, 4.5)
+texture = ExtResource("6_u6iao")
+expand_mode = 1
+
 [node name="Gear" type="RichTextLabel" parent="." unique_id=2112129474]
 layout_mode = 1
 anchors_preset = 3
@@ -92,5 +112,35 @@ offset_right = -115.0
 offset_bottom = -31.0
 grow_horizontal = 0
 grow_vertical = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Watch" type="TextureRect" parent="." unique_id=1428422307]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -213.0
+offset_top = -46.0
+offset_right = 31.0
+offset_bottom = 213.0
+grow_horizontal = 0
+texture = ExtResource("6_ho05o")
+expand_mode = 1
+
+[node name="Clock" type="RichTextLabel" parent="." unique_id=1903960319]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -147.0
+offset_top = 51.0
+offset_right = -35.0
+offset_bottom = 126.0
+grow_horizontal = 0
+theme_override_colors/default_color = Color(0.2647543, 0.34002736, 0.2877669, 1)
+theme_override_fonts/normal_font = ExtResource("6_0mwkw")
+theme_override_font_sizes/normal_font_size = 24
+text = "test"
 horizontal_alignment = 1
 vertical_alignment = 1

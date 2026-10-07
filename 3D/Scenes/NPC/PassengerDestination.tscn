@@ -1,9 +1,19 @@
 [gd_scene format=3 uid="uid://f6f7jbs7ltdp"]
 
 [ext_resource type="Script" uid="uid://b7cgdpv4hdrle" path="res://3D/Scripts/NPC/passenger_destination.gd" id="1_ujwv4"]
+[ext_resource type="Script" uid="uid://cpgkbsuwdhxlt" path="res://3D/Scripts/Environment/marker_visual.gd" id="2_0vmm1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_glk7u"]
 size = Vector3(1.9909363, 0.46557617, 1.9911156)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_glk7u"]
+top_radius = 1.3251953
+bottom_radius = 1.3251953
+height = 0.533926
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqk8r"]
+transparency = 1
+albedo_color = Color(0.83137256, 0.17254902, 0.03529412, 0.78039217)
 
 [node name="Destination" type="Area3D" unique_id=1224230168]
 script = ExtResource("1_ujwv4")
@@ -14,6 +24,12 @@ shape = SubResource("BoxShape3D_glk7u")
 
 [node name="EntryPoint" type="Marker3D" parent="." unique_id=394973297]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5838654, 0, 0)
+
+[node name="MarkerVisual" type="MeshInstance3D" parent="." unique_id=403762988]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.29512691, 0)
+mesh = SubResource("CylinderMesh_glk7u")
+surface_material_override/0 = SubResource("StandardMaterial3D_aqk8r")
+script = ExtResource("2_0vmm1")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -6,6 +6,7 @@ extends CharacterBody3D
 @export var destination_id: StringName
 
 @onready var visual = $PassengerVisual
+@onready var marker_visual = $MarkerVisual
 
 var jeepney: CharacterBody3D
 var walking: bool = false
@@ -27,12 +28,15 @@ func walk_to_jeepney(target_jeepney: CharacterBody3D):
 	walking = true
 	walking_to_destination = false
 
+	marker_visual.hide()
 
 func walk_to_destination(target_position: Vector3):
 	destination_target = target_position
 	walking = true
 	walking_to_destination = true
 	can_board = false
+
+	marker_visual.hide()
 
 func _physics_process(_delta):
 
@@ -88,6 +92,8 @@ func _physics_process(_delta):
 			walking = false
 			velocity = Vector3.ZERO
 			visual.play_animation("idle_down")
+			
+			marker_visual.show()
 
 		elif walking_to_destination:
 			reach_destination()
@@ -134,8 +140,20 @@ func board_jeepney():
 	jeepney.add_passenger(
 	destination_id,
 	visual.get_appearance()
-)
+	)
 	
+	var lines: Array[String] = [
+		"Salamat po!",
+		"Sa %s lang po." % destination_id
+	]
+
+	var screen_size = get_viewport().get_visible_rect().size
+	var dialog_position = Vector2(
+		screen_size.x / 2.0,
+		screen_size.y - 120.0
+	)
+
+	DialogueManager.start_dialog(dialog_position, lines)
 	queue_free()
 
 
@@ -166,4 +184,4 @@ func cancel_boarding():
 	walking = true
 	returning_to_wait = true
 
-	print("Boarding cancelled. Returning to waiting position.")
+	marker_visual.hide()

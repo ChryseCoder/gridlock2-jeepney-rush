@@ -6,9 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://chdifqbdrvyiv" path="res://2D (Legacy Gridlock)/Assets/Models/gltf/road_corner_curved.gltf" id="5_ayyyh"]
 [ext_resource type="PackedScene" uid="uid://dc6emv00ynyw3" path="res://2D (Legacy Gridlock)/Assets/Models/gltf/building_A.gltf" id="6_l3qnr"]
 [ext_resource type="PackedScene" uid="uid://cuhlexhf8et8k" path="res://2D (Legacy Gridlock)/Assets/Models/gltf/building_B.gltf" id="7_54r6d"]
+[ext_resource type="PackedScene" uid="uid://cv6csuccvu0mu" path="res://3D/Scenes/NPC/TrafficSpawner.tscn" id="8_a78kc"]
 [ext_resource type="PackedScene" uid="uid://bvuqfvmliootq" path="res://2D (Legacy Gridlock)/Assets/Models/gltf/building_C.gltf" id="8_sx3y6"]
-[ext_resource type="Script" uid="uid://omj3i4seapq5" path="res://3D/Scripts/NPC/traffic_spawner.gd" id="9_a4vbk"]
-[ext_resource type="PackedScene" uid="uid://cylojmimk27we" path="res://3D/Scenes/NPC/npc_vehicle_1.tscn" id="10_op7b0"]
 [ext_resource type="PackedScene" uid="uid://bumqygbpdgqq0" path="res://3D/Scenes/Environment/intersection_controller.tscn" id="11_kh3mb"]
 [ext_resource type="Script" uid="uid://d1cndyboy05hj" path="res://3D/Scripts/Environment/TrafficLight.gd" id="12_asgmh"]
 [ext_resource type="PackedScene" uid="uid://cm032lddc1rhd" path="res://2D (Legacy Gridlock)/Assets/Models/gltf/trafficlight_C.gltf" id="13_i8u6i"]
@@ -52,6 +51,7 @@ size = Vector3(1, 1, 2.0096436)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=245076646]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 30, 0)
+visible = false
 shadow_enabled = true
 sky_mode = 1
 
@@ -160,10 +160,9 @@ transform = Transform3D(-1.3113416e-07, 0, 3, 0, 3, 0, -3, 0, -1.3113416e-07, -4
 
 [node name="NPCs" type="Node3D" parent="." unique_id=1027851357]
 
-[node name="TrafficSpawner" type="Node3D" parent="NPCs" unique_id=1592436128 node_paths=PackedStringArray("traffic_path")]
-script = ExtResource("9_a4vbk")
-npc_car_scene = ExtResource("10_op7b0")
+[node name="TrafficSpawner" parent="NPCs" unique_id=949443060 node_paths=PackedStringArray("traffic_path", "camera") instance=ExtResource("8_a78kc")]
 traffic_path = NodePath("../../Path3D")
+camera = NodePath("../../Camera3D")
 
 [node name="Path3D" type="Path3D" parent="." unique_id=1560559808]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31596184, 0)

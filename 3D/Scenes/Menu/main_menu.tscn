@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://dgmb8tg0ivy5u"]
+
+[ext_resource type="Script" uid="uid://5ix0o8yx33y8" path="res://3D/Scripts/Menu/main_menu.gd" id="1_clxbm"]
+[ext_resource type="Texture2D" uid="uid://rxfgxxvmy3ms" path="res://3D/Assets/Images/Portraits/ferrari.jpg" id="2_5qkik"]
+[ext_resource type="Texture2D" uid="uid://dcf76ybtsqj0t" path="res://3D/Assets/Images/Icons/UI/GeneratedUI/PlayButton.png" id="2_yo7yy"]
+[ext_resource type="Texture2D" uid="uid://xkusjwf4s01j" path="res://3D/Assets/Images/Icons/UI/GeneratedUI/SettingsButton.png" id="3_5qkik"]
+[ext_resource type="Texture2D" uid="uid://dab1gdg6a2lss" path="res://3D/Assets/Images/Portraits/TitleArt.png" id="3_t35b6"]
+[ext_resource type="Texture2D" uid="uid://b68f2bjv7bocs" path="res://3D/Assets/Images/Icons/UI/GeneratedUI/QuitButton.png" id="4_t35b6"]
+[ext_resource type="Texture2D" uid="uid://byvpimyhfwyyf" path="res://3D/Assets/Images/Icons/UI/GeneratedUI/SettingsWindow.png" id="7_qfvg7"]
+[ext_resource type="FontFile" uid="uid://ch7wvufhip8tc" path="res://3D/Assets/HUD/TechnoRaceItalic-eZRWe.otf" id="8_eogv0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56tan"]
+texture = ExtResource("7_qfvg7")
+
+[sub_resource type="LabelSettings" id="LabelSettings_qfvg7"]
+font = ExtResource("8_eogv0")
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_jwoki"]
+font = ExtResource("8_eogv0")
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_3c3nm"]
+font = ExtResource("8_eogv0")
+font_size = 30
+
+[node name="MainMenu" type="Control" unique_id=1259385397]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_clxbm")
+game_scene = "uid://dwf13sw0fbave"
+
+[node name="Background" type="TextureRect" parent="." unique_id=1588339145]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5qkik")
+
+[node name="Logo" type="TextureRect" parent="." unique_id=837514784]
+layout_mode = 0
+offset_left = 39.0
+offset_top = -21.999998
+offset_right = 1575.0
+offset_bottom = 1002.0
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_t35b6")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=79815734]
+layout_mode = 0
+offset_left = 82.0
+offset_top = 354.0
+offset_right = 808.0
+offset_bottom = 1162.0
+scale = Vector2(0.3, 0.3)
+
+[node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=1619323871]
+layout_mode = 2
+offset_transform_scale = Vector2(0.435, 0.435)
+icon = ExtResource("2_yo7yy")
+flat = true
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=1900516653]
+layout_mode = 2
+icon = ExtResource("3_5qkik")
+flat = true
+
+[node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=1981635425]
+layout_mode = 2
+icon = ExtResource("4_t35b6")
+flat = true
+
+[node name="SettingsPanel" type="PanelContainer" parent="." unique_id=184527297]
+layout_mode = 0
+offset_left = 265.0
+offset_top = 52.0
+offset_right = 918.0
+offset_bottom = 572.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_56tan")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsPanel" unique_id=1941409824]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.8, 0.8)
+alignment = 1
+
+[node name="MasterVolumeLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1420946496]
+layout_mode = 2
+text = "Master Volume"
+label_settings = SubResource("LabelSettings_qfvg7")
+
+[node name="MasterVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=351207027]
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="BlankLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=2102427318]
+layout_mode = 2
+
+[node name="MusicVolumeLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=610490111]
+layout_mode = 2
+text = "Music"
+label_settings = SubResource("LabelSettings_jwoki")
+
+[node name="MusicVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=102087044]
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="BlankLabel2" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1656819418]
+layout_mode = 2
+
+[node name="SFXVolumeLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1282434166]
+layout_mode = 2
+text = "Sound Effects"
+label_settings = SubResource("LabelSettings_3c3nm")
+
+[node name="SFXVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=96163948]
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="BlankLabel3" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1631771363]
+layout_mode = 2
+
+[node name="CloseSetting" type="Button" parent="SettingsPanel/VBoxContainer" unique_id=2004822403]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_eogv0")
+theme_override_font_sizes/font_size = 30
+text = " Return"
+alignment = 0
+
+[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="value_changed" from="SettingsPanel/VBoxContainer/MasterVolume" to="." method="_on_master_volume_value_changed"]
+[connection signal="value_changed" from="SettingsPanel/VBoxContainer/MusicVolume" to="." method="_on_music_volume_value_changed"]
+[connection signal="value_changed" from="SettingsPanel/VBoxContainer/SFXVolume" to="." method="_on_sfx_volume_value_changed"]
+[connection signal="pressed" from="SettingsPanel/VBoxContainer/CloseSetting" to="." method="_on_close_setting_pressed"]

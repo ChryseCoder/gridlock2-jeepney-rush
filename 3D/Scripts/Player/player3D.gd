@@ -22,6 +22,8 @@ extends CharacterBody3D
 @export_group("Passenger")
 @onready var boarding_point: Marker3D = $BoardingPoint
 @export var passenger_scene: PackedScene
+@export var arrow_scene: PackedScene
+@export var arrow_container: Control
 var passengers: Array[Dictionary] = []
 var passenger_count: int = 0
 
@@ -33,13 +35,14 @@ var max_speed: float = 0.0               # derived: top speed of highest gear
 var speed: float = 0.0
 var fuel: float = max_fuel
 var turn_velocity: float = 0.0
-
+var locked_y: float
 
 func _ready() -> void:
 	add_to_group("player")
 	for kmh in gear_top_speeds_kmh:
 		gear_speed_caps.append(kmh / 3.6)
 	max_speed = gear_speed_caps[gear_speed_caps.size() - 1]
+	locked_y = global_position.y
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("gear_up"):
@@ -125,11 +128,19 @@ func _physics_process(delta: float) -> void:
 	velocity.y = 0.0 
 
 	move_and_slide()
+	global_position.y = locked_y
 
 func add_passenger(destination_id: StringName, appearance: Dictionary):
+	var arrow = null
+	if arrow_scene != null and arrow_container != null:
+		arrow = arrow_scene.instantiate()
+		arrow_container.add_child(arrow)
+		arrow.set_destination(destination_id, self)
+
 	passengers.append({
 		"destination_id": destination_id,
-		"appearance": appearance
+		"appearance": appearance,
+		"arrow": arrow
 	})
 
 	passenger_count = passengers.size()
@@ -165,6 +176,10 @@ func release_passengers(destination: Node3D):
 				destination.entry_point.global_position
 			)
 
+			var arrow = passenger_data["arrow"]
+			if arrow != null and is_instance_valid(arrow):
+				arrow.queue_free()
+			
 			passengers.remove_at(index)
 			passenger_count = passengers.size()
 

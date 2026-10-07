@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://2dthde7mk6ti"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uqy8e"]
-size = Vector3(1, 1, 2.0096436)
+size = Vector3(2.0043945, 1, 2.0096436)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fw354"]
-size = Vector3(1.9931641, 1, 1)
+size = Vector3(1.96875, 1, 2.005005)
 
 [node name="StopZones" type="Node3D" unique_id=1616066342]
 
@@ -12,12 +12,12 @@ size = Vector3(1.9931641, 1, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503201, 0, -0.50320077)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NorthSouthStopZone" unique_id=1586420360]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0.505)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.50219727, 0.55, 0.505)
 shape = SubResource("BoxShape3D_uqy8e")
 
 [node name="EastWestStopZone" type="Area3D" parent="." unique_id=1113258986]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5013533, 0, 0.5032007)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="EastWestStopZone" unique_id=36754306]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.497, 0.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5021887, 0.55, 0.5025025)
 shape = SubResource("BoxShape3D_fw354")

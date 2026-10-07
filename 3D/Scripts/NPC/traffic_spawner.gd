@@ -3,6 +3,7 @@ extends Node3D
 @export var npc_car_scene: PackedScene
 @export var traffic_path: Path3D
 @export var spawn_interval: float = 4.0 # Spawns a new car every 4 seconds
+@export var camera: Camera3D
 
 var spawn_timer: Timer
 
@@ -16,13 +17,27 @@ func _ready():
 	add_child(spawn_timer)
 
 func _on_timer_timeout():
-	if npc_car_scene and traffic_path:
-		# 1. Create a brand new copy of the car
-		var new_car = npc_car_scene.instantiate()
-		
-		# 2. Assign the path to the car BEFORE it enters the scene tree.
-		# This ensures its _ready() function can find the path immediately!
-		new_car.path_node = traffic_path
-		
-		# 3. Add the car to the world
-		add_child(new_car)
+	if not npc_car_scene or not traffic_path or not camera:
+		return
+
+	var spawn_position = traffic_path.curve.sample_baked(0.0)
+	spawn_position = traffic_path.to_global(spawn_position)
+
+	# Don't spawn if the player can currently see the spawn point.
+	if camera.is_position_in_frustum(spawn_position):
+		return
+
+	var new_car = npc_car_scene.instantiate()
+
+	new_car.path_node = traffic_path
+
+	add_child(new_car)
+	
+	var start_pos = traffic_path.curve.sample_baked(0.0)
+	var next_pos = traffic_path.curve.sample_baked(1.0)
+
+	start_pos = traffic_path.to_global(start_pos)
+	next_pos = traffic_path.to_global(next_pos)
+
+	new_car.global_position = start_pos
+	new_car.look_at(next_pos, Vector3.UP)
