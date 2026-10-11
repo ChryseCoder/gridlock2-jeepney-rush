@@ -6,6 +6,7 @@ extends Area3D
 
 @onready var marker_visual = $MarkerVisual
 
+
 var nearby_jeepney: CharacterBody3D = null
 
 func _ready():

@@ -22,6 +22,7 @@ albedo_color = Color(0.53333336, 0.95686275, 0.24313726, 0.6392157)
 [node name="Passenger" type="CharacterBody3D" unique_id=2097775546]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
 script = ExtResource("1_h21el")
+is_mission_passenger = true
 
 [node name="PassengerVisual" parent="." unique_id=419753733 instance=ExtResource("2_licpm")]
 

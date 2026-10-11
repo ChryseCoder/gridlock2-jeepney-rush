@@ -24,7 +24,9 @@ extends CharacterBody3D
 @export var passenger_scene: PackedScene
 @export var arrow_scene: PackedScene
 @export var arrow_container: Control
+
 var passengers: Array[Dictionary] = []
+var destination_arrows: Dictionary = {}
 var passenger_count: int = 0
 
 var current_gear: int = 1
@@ -66,6 +68,11 @@ func _physics_process(delta: float) -> void:
 	if fuel <= 0:
 		input_forward = 0.0
 		speed = 0.0
+		
+		var mission_manager = get_tree().get_first_node_in_group("MissionManager")
+		
+		if mission_manager:
+			mission_manager.fail_mission()
 	
 	# --- Acceleration ---
 	if input_forward > 0:
@@ -130,17 +137,23 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	global_position.y = locked_y
 
-func add_passenger(destination_id: StringName, appearance: Dictionary):
+func add_passenger(destination_id: StringName, appearance: Dictionary, is_mission_passenger: bool):
 	var arrow = null
-	if arrow_scene != null and arrow_container != null:
-		arrow = arrow_scene.instantiate()
-		arrow_container.add_child(arrow)
-		arrow.set_destination(destination_id, self)
+
+	if destination_arrows.has(destination_id):
+		arrow = destination_arrows[destination_id]
+	else:
+		if arrow_scene != null and arrow_container != null:
+			arrow = arrow_scene.instantiate()
+			arrow_container.add_child(arrow)
+			arrow.set_destination(destination_id, self)
+
+			destination_arrows[destination_id] = arrow
 
 	passengers.append({
 		"destination_id": destination_id,
 		"appearance": appearance,
-		"arrow": arrow
+		"is_mission_passenger": is_mission_passenger
 	})
 
 	passenger_count = passengers.size()
@@ -164,6 +177,7 @@ func release_passengers(destination: Node3D):
 
 		if passenger_data["destination_id"] == destination.destination_id:
 			var passenger = passenger_scene.instantiate()
+			passenger.is_mission_passenger = passenger_data["is_mission_passenger"]
 			get_tree().current_scene.add_child(passenger)
 
 			passenger.global_position = $PassengerExitPoint.global_position
@@ -175,10 +189,6 @@ func release_passengers(destination: Node3D):
 			passenger.walk_to_destination(
 				destination.entry_point.global_position
 			)
-
-			var arrow = passenger_data["arrow"]
-			if arrow != null and is_instance_valid(arrow):
-				arrow.queue_free()
 			
 			passengers.remove_at(index)
 			passenger_count = passengers.size()
@@ -189,5 +199,21 @@ func release_passengers(destination: Node3D):
 
 		else:
 			index += 1
+	
+	var still_has_destination := false
 
+	for passenger_data in passengers:
+		if passenger_data["destination_id"] == destination.destination_id:
+			still_has_destination = true
+			break
+
+	if not still_has_destination:
+		if destination_arrows.has(destination.destination_id):
+			var arrow = destination_arrows[destination.destination_id]
+
+			if is_instance_valid(arrow):
+				arrow.queue_free()
+
+			destination_arrows.erase(destination.destination_id)
+			
 	is_releasing_passengers = false

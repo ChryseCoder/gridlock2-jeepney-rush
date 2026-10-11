@@ -37,6 +37,7 @@ Player=""
 Environment=""
 npc_vehicles=""
 npc_passengers=""
+MissionManager=""
 
 [input]
 

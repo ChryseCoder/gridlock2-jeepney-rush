@@ -5,6 +5,7 @@ extends Node
 
 
 var dialog_lines: Array[String] = []
+var dialogue_queue: Array[Dictionary] = []
 var current_line_index = 0
 
 var text_box
@@ -15,15 +16,15 @@ var can_advance_line = false
 
 
 func start_dialog(position: Vector2, lines: Array[String]):
+	dialogue_queue.append({
+		"position": position,
+		"lines": lines
+	})
+
 	if is_dialog_active:
 		return
 
-	dialog_lines = lines
-	text_box_position = position
-	current_line_index = 0
-	is_dialog_active = true
-
-	_show_text_box()
+	_start_next_dialogue()
 	
 func _show_text_box():
 	text_box = text_box_scene.instantiate()
@@ -50,6 +51,35 @@ func _on_text_box_finished_displaying():
 	if current_line_index >= dialog_lines.size():
 		is_dialog_active = false
 		current_line_index = 0
+
+		await get_tree().create_timer(0.2).timeout
+		_start_next_dialogue()
 		return
 
 	_show_text_box()
+
+func _start_next_dialogue():
+	if dialogue_queue.is_empty():
+		is_dialog_active = false
+		return
+
+	var next_dialogue = dialogue_queue.pop_front()
+
+	dialog_lines = next_dialogue["lines"]
+	text_box_position = next_dialogue["position"]
+	current_line_index = 0
+	is_dialog_active = true
+
+	_show_text_box()
+
+func cancel_dialogue():
+	is_dialog_active = false
+	can_advance_line = false
+	current_line_index = 0
+	dialog_lines.clear()
+	dialogue_queue.clear()
+
+	if is_instance_valid(text_box):
+		text_box.queue_free()
+
+	text_box = null

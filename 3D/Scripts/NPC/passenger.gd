@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var boarding_distance: float = 0.5
 @export var max_boarding_distance: float = 3.0
 @export var destination_id: StringName
+@export var is_mission_passenger: bool = false
 
 @onready var visual = $PassengerVisual
 @onready var marker_visual = $MarkerVisual
@@ -139,7 +140,8 @@ func board_jeepney():
 
 	jeepney.add_passenger(
 	destination_id,
-	visual.get_appearance()
+	visual.get_appearance(),
+	is_mission_passenger
 	)
 	
 	var lines: Array[String] = [
@@ -162,6 +164,13 @@ func reach_destination():
 	velocity = Vector3.ZERO
 
 	print("Passenger reached destination!")
+	print("Mission passenger: ", is_mission_passenger)
+	
+	if is_mission_passenger:	
+		var mission_manager = get_tree().get_first_node_in_group("MissionManager")
+		
+		if mission_manager:
+			mission_manager.complete_mission()
 
 	queue_free()
 

@@ -20,7 +20,7 @@ var time_left: float = 0.0
 var running: bool = false
 
 func _ready() -> void:
-	player = get_tree().get_first_node_in_group("player")
+	player = get_tree().get_first_node_in_group("Player")
 	start_countdown(start_time)
 
 func start_countdown(seconds: float) -> void:
@@ -43,6 +43,11 @@ func _process(delta: float) -> void:
 		if time_left <= 0.0:
 			running = false
 			timer_finished.emit()
+
+			var mission_manager = get_tree().get_first_node_in_group("MissionManager")
+
+			if mission_manager:
+				mission_manager.fail_mission()
 
 	if player == null:
 		player = get_tree().get_first_node_in_group("Player")

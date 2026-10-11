@@ -12,17 +12,9 @@
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56tan"]
 texture = ExtResource("7_qfvg7")
 
-[sub_resource type="LabelSettings" id="LabelSettings_qfvg7"]
+[sub_resource type="LabelSettings" id="LabelSettings_glk7u"]
 font = ExtResource("8_eogv0")
-font_size = 30
-
-[sub_resource type="LabelSettings" id="LabelSettings_jwoki"]
-font = ExtResource("8_eogv0")
-font_size = 30
-
-[sub_resource type="LabelSettings" id="LabelSettings_3c3nm"]
-font = ExtResource("8_eogv0")
-font_size = 30
+font_size = 34
 
 [node name="MainMenu" type="Control" unique_id=1259385397]
 layout_mode = 3
@@ -45,21 +37,27 @@ texture = ExtResource("2_5qkik")
 
 [node name="Logo" type="TextureRect" parent="." unique_id=837514784]
 layout_mode = 0
-offset_left = 39.0
-offset_top = -21.999998
-offset_right = 1575.0
-offset_bottom = 1002.0
+anchor_left = 0.033854168
+anchor_top = -0.033950616
+anchor_right = 0.56718755
+anchor_bottom = 0.59814817
+offset_right = 921.6
+offset_bottom = 614.4
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_t35b6")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=79815734]
 layout_mode = 0
-offset_left = 82.0
-offset_top = 354.0
-offset_right = 808.0
-offset_bottom = 1162.0
+anchor_left = 0.07118055
+anchor_top = 0.5462963
+anchor_right = 0.26024306
+anchor_bottom = 0.9203704
+offset_right = 508.2
+offset_bottom = 565.6
 scale = Vector2(0.3, 0.3)
+metadata/_edit_use_anchors_ = true
 
 [node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=1619323871]
 layout_mode = 2
@@ -78,67 +76,109 @@ icon = ExtResource("4_t35b6")
 flat = true
 
 [node name="SettingsPanel" type="PanelContainer" parent="." unique_id=184527297]
-layout_mode = 0
-offset_left = 265.0
-offset_top = 52.0
-offset_right = 918.0
-offset_bottom = 572.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.23003472
+anchor_top = 0.08024691
+anchor_right = 0.796875
+anchor_bottom = 0.88271606
 theme_override_styles/panel = SubResource("StyleBoxTexture_56tan")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SettingsPanel" unique_id=1941409824]
+[node name="VBoxContainer" type="Control" parent="SettingsPanel" unique_id=1924238285]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(0.8, 0.8)
-alignment = 1
 
-[node name="MasterVolumeLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1420946496]
-layout_mode = 2
-text = "Master Volume"
-label_settings = SubResource("LabelSettings_qfvg7")
+[node name="MasterVolumeLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1927045264]
+layout_mode = 0
+anchor_left = 0.15007657
+anchor_top = 0.3673077
+anchor_right = 0.4762634
+anchor_bottom = 0.50769234
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(-0.225, 0)
+text = "Master Volume
+"
+label_settings = SubResource("LabelSettings_glk7u")
+metadata/_edit_use_anchors_ = true
 
-[node name="MasterVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=351207027]
-layout_mode = 2
+[node name="MasterVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=1187410735]
+layout_mode = 0
+anchor_left = 0.061255742
+anchor_top = 0.44230768
+anchor_right = 0.9341501
+anchor_bottom = 0.4730769
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -5.91)
 max_value = 1.0
 step = 0.1
 value = 1.0
+metadata/_edit_use_anchors_ = true
 
-[node name="BlankLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=2102427318]
-layout_mode = 2
+[node name="MusicLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1956109615]
+layout_mode = 0
+anchor_left = 0.15007657
+anchor_top = 0.46346155
+anchor_right = 0.4762634
+anchor_bottom = 0.60384613
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(-0.225, 0.25)
+text = "Music
+"
+label_settings = SubResource("LabelSettings_glk7u")
+metadata/_edit_use_anchors_ = true
 
-[node name="MusicVolumeLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=610490111]
-layout_mode = 2
-text = "Music"
-label_settings = SubResource("LabelSettings_jwoki")
-
-[node name="MusicVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=102087044]
-layout_mode = 2
+[node name="MusicVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=1070471369]
+layout_mode = 0
+anchor_left = 0.061255742
+anchor_top = 0.5519231
+anchor_right = 0.9341501
+anchor_bottom = 0.5826923
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 8.36)
 max_value = 1.0
 step = 0.1
 value = 1.0
+metadata/_edit_use_anchors_ = true
 
-[node name="BlankLabel2" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1656819418]
-layout_mode = 2
-
-[node name="SFXVolumeLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1282434166]
-layout_mode = 2
+[node name="SFXLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1896465349]
+layout_mode = 0
+anchor_left = 0.15007657
+anchor_top = 0.60384613
+anchor_right = 0.4762634
+anchor_bottom = 0.74423075
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(-0.225, 0.25)
 text = "Sound Effects"
-label_settings = SubResource("LabelSettings_3c3nm")
+label_settings = SubResource("LabelSettings_glk7u")
+metadata/_edit_use_anchors_ = true
 
-[node name="SFXVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=96163948]
-layout_mode = 2
+[node name="SFXVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=404354854]
+layout_mode = 0
+anchor_left = 0.061255742
+anchor_top = 0.66346157
+anchor_right = 0.9341501
+anchor_bottom = 0.6942308
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 23.225)
 max_value = 1.0
 step = 0.1
 value = 1.0
+metadata/_edit_use_anchors_ = true
 
-[node name="BlankLabel3" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1631771363]
-layout_mode = 2
-
-[node name="CloseSetting" type="Button" parent="SettingsPanel/VBoxContainer" unique_id=2004822403]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("8_eogv0")
-theme_override_font_sizes/font_size = 30
-text = " Return"
-alignment = 0
+[node name="CloseSetting" type="Button" parent="SettingsPanel/VBoxContainer" unique_id=717032088]
+layout_mode = 0
+anchor_left = 0.84686065
+anchor_top = 0.13461539
+anchor_right = 0.9145483
+anchor_bottom = 0.21658655
+offset_right = -18.200012
+offset_bottom = -11.625
+scale = Vector2(1.7, 1.375)
+offset_transform_enabled = true
+offset_transform_position = Vector2(36.325, -30.63)
+text = " × "
+metadata/_edit_use_anchors_ = true
 
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
