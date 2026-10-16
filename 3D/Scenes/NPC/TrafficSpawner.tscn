@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cv6csuccvu0mu"]
+
+[ext_resource type="Script" uid="uid://omj3i4seapq5" path="res://3D/Scripts/NPC/traffic_spawner.gd" id="1_ndexk"]
+[ext_resource type="PackedScene" uid="uid://cylojmimk27we" path="res://3D/Scenes/NPC/npc_vehicle_1.tscn" id="2_770s6"]
+
+[node name="TrafficSpawner" type="Node3D" unique_id=949443060 node_paths=PackedStringArray("traffic_path")]
+script = ExtResource("1_ndexk")
+npc_car_scene = ExtResource("2_770s6")
+traffic_path = NodePath("")

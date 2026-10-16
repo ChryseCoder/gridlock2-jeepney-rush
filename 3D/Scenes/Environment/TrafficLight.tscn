@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://0rcb2dmor1jf"]
+
+[ext_resource type="PackedScene" uid="uid://cm032lddc1rhd" path="res://2D (Legacy Gridlock)/Assets/Models/gltf/trafficlight_C.gltf" id="1_ol2vb"]
+[ext_resource type="Script" uid="uid://d1cndyboy05hj" path="res://3D/Scripts/Environment/TrafficLight.gd" id="1_otd5u"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nm7ev"]
+size = Vector3(0.060546875, 0.7184448, 0.060546875)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4fp7u"]
+height = 0.29211426
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glk7u"]
+albedo_color = Color(7.1955474e-06, 0.70586324, 1.92523e-07, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqk8r"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jsm5q"]
+albedo_color = Color(0.92629945, 2.430603e-06, 1.92523e-06, 1)
+
+[node name="TrafficLight" type="Node3D" unique_id=1516281460]
+
+[node name="traffic_light" type="StaticBody3D" parent="." unique_id=1123463455 node_paths=PackedStringArray("red_lens", "yellow_lens", "green_lens")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+script = ExtResource("1_otd5u")
+red_lens = NodePath("red_lens")
+yellow_lens = NodePath("yellow_lens")
+green_lens = NodePath("green_lens")
+
+[node name="trafficlight_C2" parent="traffic_light" unique_id=1255770183 instance=ExtResource("1_ol2vb")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 0, 0.06146598)
+
+[node name="trafficlightC2_collision" type="CollisionShape3D" parent="traffic_light" unique_id=531453854]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 1.077301, 0.06146598)
+shape = SubResource("BoxShape3D_nm7ev")
+
+[node name="green_lens" type="MeshInstance3D" parent="traffic_light" unique_id=656322918]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094884, 2.3823547, 0.2904539)
+mesh = SubResource("CylinderMesh_4fp7u")
+surface_material_override/0 = SubResource("StandardMaterial3D_glk7u")
+
+[node name="yellow_lens" type="MeshInstance3D" parent="traffic_light" unique_id=1710133231]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094887, 2.5829163, 0.2904539)
+mesh = SubResource("CylinderMesh_4fp7u")
+surface_material_override/0 = SubResource("StandardMaterial3D_aqk8r")
+
+[node name="red_lens" type="MeshInstance3D" parent="traffic_light" unique_id=1914410429]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094885, 2.7845154, 0.2904539)
+mesh = SubResource("CylinderMesh_4fp7u")
+surface_material_override/0 = SubResource("StandardMaterial3D_jsm5q")

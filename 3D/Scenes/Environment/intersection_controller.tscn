@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bumqygbpdgqq0"]
+
+[ext_resource type="Script" uid="uid://o2yomyb84kx1" path="res://3D/Scripts/Environment/IntersectionController.gd" id="1_h7x8w"]
+
+[node name="IntersectionController" type="Node3D" unique_id=190452989 node_paths=PackedStringArray("north_light", "south_light", "east_light", "west_light", "north_stop_zone", "south_stop_zone", "east_stop_zone", "west_stop_zone")]
+script = ExtResource("1_h7x8w")
+north_light = NodePath("")
+south_light = NodePath("")
+east_light = NodePath("")
+west_light = NodePath("")
+north_stop_zone = NodePath("")
+south_stop_zone = NodePath("")
+east_stop_zone = NodePath("")
+west_stop_zone = NodePath("")

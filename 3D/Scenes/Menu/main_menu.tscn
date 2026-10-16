@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://dgmb8tg0ivy5u"]
+
+[ext_resource type="Script" uid="uid://5ix0o8yx33y8" path="res://3D/Scripts/Menu/main_menu.gd" id="1_clxbm"]
+[ext_resource type="Texture2D" uid="uid://rxfgxxvmy3ms" path="res://3D/Assets/Images/Portraits/ferrari.jpg" id="2_5qkik"]
+[ext_resource type="Texture2D" uid="uid://dcf76ybtsqj0t" path="res://3D/Assets/Images/Icons/UI/GeneratedUI/PlayButton.png" id="2_yo7yy"]
+[ext_resource type="Texture2D" uid="uid://xkusjwf4s01j" path="res://3D/Assets/Images/Icons/UI/GeneratedUI/SettingsButton.png" id="3_5qkik"]
+[ext_resource type="Texture2D" uid="uid://dab1gdg6a2lss" path="res://3D/Assets/Images/Portraits/TitleArt.png" id="3_t35b6"]
+[ext_resource type="Texture2D" uid="uid://b68f2bjv7bocs" path="res://3D/Assets/Images/Icons/UI/GeneratedUI/QuitButton.png" id="4_t35b6"]
+[ext_resource type="Texture2D" uid="uid://byvpimyhfwyyf" path="res://3D/Assets/Images/Icons/UI/GeneratedUI/SettingsWindow.png" id="7_qfvg7"]
+[ext_resource type="FontFile" uid="uid://ch7wvufhip8tc" path="res://3D/Assets/HUD/TechnoRaceItalic-eZRWe.otf" id="8_eogv0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56tan"]
+texture = ExtResource("7_qfvg7")
+
+[sub_resource type="LabelSettings" id="LabelSettings_glk7u"]
+font = ExtResource("8_eogv0")
+font_size = 34
+
+[node name="MainMenu" type="Control" unique_id=1259385397]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_clxbm")
+game_scene = "uid://dwf13sw0fbave"
+
+[node name="Background" type="TextureRect" parent="." unique_id=1588339145]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5qkik")
+
+[node name="Logo" type="TextureRect" parent="." unique_id=837514784]
+layout_mode = 0
+anchor_left = 0.033854168
+anchor_top = -0.033950616
+anchor_right = 0.56718755
+anchor_bottom = 0.59814817
+offset_right = 921.6
+offset_bottom = 614.4
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_t35b6")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=79815734]
+layout_mode = 0
+anchor_left = 0.07118055
+anchor_top = 0.5462963
+anchor_right = 0.26024306
+anchor_bottom = 0.9203704
+offset_right = 508.2
+offset_bottom = 565.6
+scale = Vector2(0.3, 0.3)
+metadata/_edit_use_anchors_ = true
+
+[node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=1619323871]
+layout_mode = 2
+offset_transform_scale = Vector2(0.435, 0.435)
+icon = ExtResource("2_yo7yy")
+flat = true
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=1900516653]
+layout_mode = 2
+icon = ExtResource("3_5qkik")
+flat = true
+
+[node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=1981635425]
+layout_mode = 2
+icon = ExtResource("4_t35b6")
+flat = true
+
+[node name="SettingsPanel" type="PanelContainer" parent="." unique_id=184527297]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.23003472
+anchor_top = 0.08024691
+anchor_right = 0.796875
+anchor_bottom = 0.88271606
+theme_override_styles/panel = SubResource("StyleBoxTexture_56tan")
+
+[node name="VBoxContainer" type="Control" parent="SettingsPanel" unique_id=1924238285]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.8, 0.8)
+
+[node name="MasterVolumeLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1927045264]
+layout_mode = 0
+anchor_left = 0.15007657
+anchor_top = 0.3673077
+anchor_right = 0.4762634
+anchor_bottom = 0.50769234
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(-0.225, 0)
+text = "Master Volume
+"
+label_settings = SubResource("LabelSettings_glk7u")
+metadata/_edit_use_anchors_ = true
+
+[node name="MasterVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=1187410735]
+layout_mode = 0
+anchor_left = 0.061255742
+anchor_top = 0.44230768
+anchor_right = 0.9341501
+anchor_bottom = 0.4730769
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -5.91)
+max_value = 1.0
+step = 0.1
+value = 1.0
+metadata/_edit_use_anchors_ = true
+
+[node name="MusicLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1956109615]
+layout_mode = 0
+anchor_left = 0.15007657
+anchor_top = 0.46346155
+anchor_right = 0.4762634
+anchor_bottom = 0.60384613
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(-0.225, 0.25)
+text = "Music
+"
+label_settings = SubResource("LabelSettings_glk7u")
+metadata/_edit_use_anchors_ = true
+
+[node name="MusicVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=1070471369]
+layout_mode = 0
+anchor_left = 0.061255742
+anchor_top = 0.5519231
+anchor_right = 0.9341501
+anchor_bottom = 0.5826923
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 8.36)
+max_value = 1.0
+step = 0.1
+value = 1.0
+metadata/_edit_use_anchors_ = true
+
+[node name="SFXLabel" type="Label" parent="SettingsPanel/VBoxContainer" unique_id=1896465349]
+layout_mode = 0
+anchor_left = 0.15007657
+anchor_top = 0.60384613
+anchor_right = 0.4762634
+anchor_bottom = 0.74423075
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(-0.225, 0.25)
+text = "Sound Effects"
+label_settings = SubResource("LabelSettings_glk7u")
+metadata/_edit_use_anchors_ = true
+
+[node name="SFXVolume" type="HSlider" parent="SettingsPanel/VBoxContainer" unique_id=404354854]
+layout_mode = 0
+anchor_left = 0.061255742
+anchor_top = 0.66346157
+anchor_right = 0.9341501
+anchor_bottom = 0.6942308
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 23.225)
+max_value = 1.0
+step = 0.1
+value = 1.0
+metadata/_edit_use_anchors_ = true
+
+[node name="CloseSetting" type="Button" parent="SettingsPanel/VBoxContainer" unique_id=717032088]
+layout_mode = 0
+anchor_left = 0.84686065
+anchor_top = 0.13461539
+anchor_right = 0.9145483
+anchor_bottom = 0.21658655
+offset_right = -18.200012
+offset_bottom = -11.625
+scale = Vector2(1.7, 1.375)
+offset_transform_enabled = true
+offset_transform_position = Vector2(36.325, -30.63)
+text = " × "
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="value_changed" from="SettingsPanel/VBoxContainer/MasterVolume" to="." method="_on_master_volume_value_changed"]
+[connection signal="value_changed" from="SettingsPanel/VBoxContainer/MusicVolume" to="." method="_on_music_volume_value_changed"]
+[connection signal="value_changed" from="SettingsPanel/VBoxContainer/SFXVolume" to="." method="_on_sfx_volume_value_changed"]
+[connection signal="pressed" from="SettingsPanel/VBoxContainer/CloseSetting" to="." method="_on_close_setting_pressed"]

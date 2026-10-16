@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dx27u6v8848ng"]
+
+[ext_resource type="Script" uid="uid://b7i51g7fqa0d5" path="res://3D/Scripts/Player/player3D.gd" id="1_37q7h"]
+[ext_resource type="Texture2D" uid="uid://dh53l36as1qda" path="res://2D (Legacy Gridlock)/Assets/Images/Sprites/Player/jeep.png" id="2_wk0tq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_56tan"]
+size = Vector3(0.8534546, 2.9527893, 1)
+
+[node name="Player" type="CharacterBody3D" unique_id=233478642 groups=["Player"]]
+transform = Transform3D(1, 0, 4.371139e-08, -4.371139e-08, 1.9106855e-15, 1, 0, -1, 1.9106855e-15, 0, 0, 0)
+axis_lock_linear_y = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("1_37q7h")
+acceleration = 5.0
+brake_force = 15.0
+turn_speed = 1.5
+
+[node name="Jeepney" type="Sprite3D" parent="." unique_id=756394110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23671243, -0.57819855, 0)
+texture = ExtResource("2_wk0tq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=136400679]
+transform = Transform3D(1, 0, 0, 0, 1, 8.351872e-23, 0, 8.351872e-23, 1, -0.22915646, -0.5830231, -5.9604645e-08)
+shape = SubResource("BoxShape3D_56tan")
+
+[node name="BoardingPoint" type="Marker3D" parent="." unique_id=952031333]
+transform = Transform3D(1, 0, -1.59578e-37, 0, 1, 0, 0, 0, 1, -0.2242024, -2.1447682, -9.8001935e-09)
+
+[node name="PassengerExitPoint" type="Marker3D" parent="." unique_id=2010316894]
+transform = Transform3D(1, 0, -1.59578e-37, 0, 1, 0, 0, 0, 1, -0.22306144, -2.1462374, -9.7503206e-09)
