@@ -21,6 +21,7 @@ var waiting_position: Vector3
 var returning_to_wait: bool = false
 
 func _ready():
+	add_to_group("MinimapPassengers")
 	waiting_position = global_position
 	visual.play_animation("idle_down")
 

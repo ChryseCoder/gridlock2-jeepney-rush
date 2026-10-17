@@ -167,13 +167,13 @@ albedo_color = Color(0.40784314, 0.40784314, 0.40784314, 1)
 [node name="GameMap" type="Node3D" unique_id=20335399]
 
 [node name="Player" parent="." unique_id=233478642 node_paths=PackedStringArray("arrow_container") instance=ExtResource("1_lxtvu")]
-transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, 260.52475, 2.3, -429.9217)
+transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, 260.52475, 2.3, -424.31705)
 passenger_scene = ExtResource("7_0mkmq")
 arrow_scene = ExtResource("3_spb7i")
 arrow_container = NodePath("../HUD/ArrowContainer")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=507281936 node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 260.47906, 0, -429.83487)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 260.47906, 0, -424.23022)
 script = ExtResource("6_lxtvu")
 target = NodePath("../Player")
 height = 12.0
@@ -694,9 +694,18 @@ surface_material_override/0 = SubResource("StandardMaterial3D_v0wxs")
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 295.6354, 2.0690918, -158.74184)
 destination_id = &"Hotel"
 
+[node name="Destination2" parent="." unique_id=667024040 instance=ExtResource("8_duwqk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 267.11572, 2.0690918, -212.46773)
+destination_id = &"School"
+
 [node name="Passenger" parent="." unique_id=2097775546 instance=ExtResource("7_0mkmq")]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -425.6959)
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -419.22617)
 destination_id = &"Hotel"
+
+[node name="Passenger2" parent="." unique_id=2042538772 instance=ExtResource("7_0mkmq")]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -418.04633)
+destination_id = &"School"
+is_mission_passenger = false
 
 [node name="Terminal" parent="." unique_id=1107831571 instance=ExtResource("17_kdkc1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 292.79172, 2.1, -161.12367)
@@ -713,11 +722,6 @@ script = ExtResource("24_os6ma")
 mission_complete_window = NodePath("../HUD/MissionComplete")
 mission_failed_window = NodePath("../HUD/MissionFailed")
 level1_cones = NodePath("../LevelBoundaries/TrafficConesLevel1")
-
-[node name="Passenger2" parent="." unique_id=2042538772 instance=ExtResource("7_0mkmq")]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -424.51605)
-destination_id = &"Hotel"
-is_mission_passenger = false
 
 [node name="MinimapBorders" type="Node3D" parent="." unique_id=1406980269]
 

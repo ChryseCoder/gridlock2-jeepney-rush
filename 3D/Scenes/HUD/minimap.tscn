@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cahd1rnuxgj2r" path="res://3D/Scripts/HUD/minimap.gd" id="1_jsgtn"]
 [ext_resource type="Texture2D" uid="uid://dpdk5jo3lgeif" path="res://3D/Assets/HUD/playerarrow.png" id="2_jsgtn"]
 [ext_resource type="Texture2D" uid="uid://d3m5me073v0f4" path="res://3D/Assets/HUD/Minimap2.png" id="2_utonb"]
+[ext_resource type="Texture2D" uid="uid://nfpkow42fcl4" path="res://3D/Assets/HUD/MapFrame.png" id="3_utonb"]
 
 [node name="Minimap" type="Control" unique_id=955092539]
 layout_mode = 3
@@ -25,14 +26,27 @@ offset_bottom = 40.0
 
 [node name="MapTexture" type="TextureRect" parent="MapClip/MapContent" unique_id=1907065153]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -1.0
+offset_top = -6.0
+offset_right = 634.0
+offset_bottom = 629.0
 texture = ExtResource("2_utonb")
 
 [node name="DestinationMarkers" type="Control" parent="MapClip/MapContent" unique_id=633278522]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="MapFrame" type="TextureRect" parent="." unique_id=2089665368]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.9590909
+anchor_bottom = 1.0
+offset_right = 1988.9998
+offset_bottom = 1979.9998
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_utonb")
+metadata/_edit_use_anchors_ = true
 
 [node name="PlayerMarker" type="TextureRect" parent="." unique_id=897018003]
 layout_mode = 0
