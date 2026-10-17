@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cudnyptmimj51"]
+
+[ext_resource type="Texture2D" uid="uid://dr6dwg4rkgavb" path="res://3D/Assets/Images/Icons/Traffic/signal_stop.svg" id="1_wfs6a"]
+
+[node name="Main" type="Node3D" unique_id=709668936]
+
+[node name="SignalIndicator" type="Sprite3D" parent="." unique_id=374209049]
+pixel_size = 0.0125
+billboard = 1
+texture = ExtResource("1_wfs6a")

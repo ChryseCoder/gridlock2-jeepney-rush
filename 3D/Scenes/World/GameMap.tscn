@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cm032lddc1rhd" path="res://2D (Legacy Gridlock)/Assets/Models/gltf/trafficlight_C.gltf" id="7_spb7i"]
 [ext_resource type="PackedScene" uid="uid://f6f7jbs7ltdp" path="res://3D/Scenes/NPC/PassengerDestination.tscn" id="8_duwqk"]
 [ext_resource type="MeshLibrary" uid="uid://warfv00wmkuv" path="res://3D/Assets/Models/meshlibrary/ModernBuildings.meshlib" id="8_e3d26"]
+[ext_resource type="Texture2D" uid="uid://dr6dwg4rkgavb" path="res://3D/Assets/Images/Icons/Traffic/signal_stop.svg" id="9_3q6c2"]
 [ext_resource type="MeshLibrary" uid="uid://cd1tbiak1o7gh" path="res://3D/Assets/Models/meshlibrary/Brickhouses.meshlib" id="9_hwepy"]
 [ext_resource type="MeshLibrary" uid="uid://ddhb5m3vum0wv" path="res://3D/Assets/Models/meshlibrary/HDBuildings.meshlib" id="10_tvvkp"]
 [ext_resource type="PackedScene" uid="uid://c87v43teptmi0" path="res://3D/Assets/Models/Gas Station/gas_stationSMALL.glb" id="11_1xe7k"]
@@ -25,6 +26,7 @@
 [ext_resource type="MeshLibrary" uid="uid://c1jaamivoei51" path="res://3D/Assets/Models/meshlibrary/TrafficStuff.meshlib" id="18_bobrl"]
 [ext_resource type="PackedScene" uid="uid://gdolyyq8ftsu" path="res://3D/Scenes/Environment/grandstand.tscn" id="18_e6tre"]
 [ext_resource type="PackedScene" uid="uid://bhl2k70ct3e42" path="res://3D/Scenes/Menu/pause_menu.tscn" id="21_xlwa8"]
+[ext_resource type="Script" uid="uid://cpgkbsuwdhxlt" path="res://3D/Scripts/Environment/marker_visual.gd" id="22_2sx5p"]
 [ext_resource type="PackedScene" uid="uid://dcvx5ohve1yp7" path="res://3D/Scenes/Menu/mission_complete.tscn" id="22_v50gu"]
 [ext_resource type="PackedScene" uid="uid://bestwa4k6a21j" path="res://3D/Scenes/Menu/mission_failed.tscn" id="24_2f5bb"]
 [ext_resource type="Script" uid="uid://c2d13hjkcj57y" path="res://3D/Scripts/Mission/mission_manager.gd" id="24_os6ma"]
@@ -124,6 +126,19 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0, 0)
 }
 point_count = 5
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4c3ey"]
+height = 0.24186707
+radius = 1.324707
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qvqqm"]
+top_radius = 1.3251953
+bottom_radius = 1.3251953
+height = 0.24853039
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7qnu0"]
+transparency = 1
+albedo_color = Color(0.7046649, 0.351262, 1.92523e-07, 0.78039217)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_isuv3"]
 size = Vector3(2.2318726, 3.398468, 5.635254)
@@ -308,12 +323,13 @@ west_light = NodePath("west_traffic_light1")
 north_stop_zone = NodePath("north_stop_zone1")
 west_stop_zone = NodePath("west_stop_zone1")
 
-[node name="north_traffic_light1" type="StaticBody3D" parent="TrafficLights/IntersectionController1" unique_id=657479699 node_paths=PackedStringArray("red_lens", "yellow_lens", "green_lens")]
+[node name="north_traffic_light1" type="StaticBody3D" parent="TrafficLights/IntersectionController1" unique_id=657479699 node_paths=PackedStringArray("red_lens", "yellow_lens", "green_lens", "signal_indicator")]
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 258.187, 2.2, -335.999)
 script = ExtResource("6_wo0vt")
 red_lens = NodePath("red_lens")
 yellow_lens = NodePath("yellow_lens")
 green_lens = NodePath("green_lens")
+signal_indicator = NodePath("SignalIndicator")
 
 [node name="trafficlight_C2" parent="TrafficLights/IntersectionController1/north_traffic_light1" unique_id=661375749 instance=ExtResource("7_spb7i")]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 0, 0.06146598)
@@ -337,6 +353,12 @@ transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e
 mesh = SubResource("CylinderMesh_os6ma")
 surface_material_override/0 = SubResource("StandardMaterial3D_2f5bb")
 
+[node name="SignalIndicator" type="Sprite3D" parent="TrafficLights/IntersectionController1/north_traffic_light1" unique_id=1907033722]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24804688, 3.4000003, 1.3535156)
+pixel_size = 0.0125
+billboard = 1
+texture = ExtResource("9_3q6c2")
+
 [node name="north_stop_zone1" type="Area3D" parent="TrafficLights/IntersectionController1" unique_id=1077779089]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 261.598, 2, -334.562)
 
@@ -344,12 +366,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 261.598, 2, -334.562)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.808136, 0.54999995, -4.101532)
 shape = SubResource("BoxShape3D_wo0vt")
 
-[node name="west_traffic_light1" type="StaticBody3D" parent="TrafficLights/IntersectionController1" unique_id=2115227422 node_paths=PackedStringArray("red_lens", "yellow_lens", "green_lens")]
+[node name="west_traffic_light1" type="StaticBody3D" parent="TrafficLights/IntersectionController1" unique_id=2115227422 node_paths=PackedStringArray("red_lens", "yellow_lens", "green_lens", "signal_indicator")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 253.777, 2.2, -325.693)
 script = ExtResource("6_wo0vt")
 red_lens = NodePath("red_lens")
 yellow_lens = NodePath("yellow_lens")
 green_lens = NodePath("green_lens")
+signal_indicator = NodePath("SignalIndicator")
 
 [node name="trafficlight_C2" parent="TrafficLights/IntersectionController1/west_traffic_light1" unique_id=594388194 instance=ExtResource("7_spb7i")]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 0, 0.06146598)
@@ -372,6 +395,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bobrl")
 transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094885, 2.7845154, 0.2904539)
 mesh = SubResource("CylinderMesh_os6ma")
 surface_material_override/0 = SubResource("StandardMaterial3D_2f5bb")
+
+[node name="SignalIndicator" type="Sprite3D" parent="TrafficLights/IntersectionController1/west_traffic_light1" unique_id=1419896900]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09738159, 3.4000003, 1.3127289)
+pixel_size = 0.0125
+billboard = 1
+texture = ExtResource("9_3q6c2")
 
 [node name="west_stop_zone1" type="Area3D" parent="TrafficLights/IntersectionController1" unique_id=1331203966]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 249.933, 2, -327.917)
@@ -497,6 +526,19 @@ data = {
 
 [node name="gas_stationSMALL" parent="GasStations" unique_id=1121171395 instance=ExtResource("11_1xe7k")]
 transform = Transform3D(-1.7484556e-08, 0, 0.4, 0, 0.4, 0, -0.4, 0, -1.7484556e-08, 276.3608, 2, -135.50337)
+
+[node name="RefuelingAreaSmall" type="Area3D" parent="GasStations/gas_stationSMALL" unique_id=1870841911]
+transform = Transform3D(-2.6226832e-07, 0, -6, 0, 6, 0, 6, 0, -2.6226832e-07, 0.227, 2, -0.907)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GasStations/gas_stationSMALL/RefuelingAreaSmall" unique_id=1014800312]
+transform = Transform3D(0.99999976, 0, -4.305045e-19, 0, 0.99999976, 0, 4.305045e-19, 0, 0.99999976, 0.00045013428, 0.15927899, 0.005279541)
+shape = SubResource("CylinderShape3D_4c3ey")
+
+[node name="MarkerVisual" type="MeshInstance3D" parent="GasStations/gas_stationSMALL/RefuelingAreaSmall" unique_id=229812913]
+transform = Transform3D(0.99999976, 0, -5.632769e-20, 0, 0.99999976, 0, 5.632769e-20, 0, 0.99999976, 0, 0.1524291, 0)
+mesh = SubResource("CylinderMesh_qvqqm")
+surface_material_override/0 = SubResource("StandardMaterial3D_7qnu0")
+script = ExtResource("22_2sx5p")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="GasStations/gas_stationSMALL" unique_id=405971626]
 
@@ -692,7 +734,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_v0wxs")
 
 [node name="Destination" parent="." unique_id=1224230168 instance=ExtResource("8_duwqk")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 295.6354, 2.0690918, -158.74184)
-destination_id = &"Hotel"
+destination_id = &"North Terminal"
 
 [node name="Destination2" parent="." unique_id=667024040 instance=ExtResource("8_duwqk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 267.11572, 2.0690918, -212.46773)
@@ -700,7 +742,7 @@ destination_id = &"School"
 
 [node name="Passenger" parent="." unique_id=2097775546 instance=ExtResource("7_0mkmq")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -419.22617)
-destination_id = &"Hotel"
+destination_id = &"North Terminal"
 
 [node name="Passenger2" parent="." unique_id=2042538772 instance=ExtResource("7_0mkmq")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -418.04633)
