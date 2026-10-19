@@ -56,14 +56,7 @@ func _process(delta: float) -> void:
 		time_left = max(time_left - delta, 0.0)
 		_update_clock()
 		_finish_countdown_if_needed()
-		if time_left <= 0.0:
-			running = false
-			timer_finished.emit()
 
-			var mission_manager = get_tree().get_first_node_in_group("MissionManager")
-
-			if mission_manager:
-				mission_manager.fail_mission()
 
 	if player == null:
 		player = get_tree().get_first_node_in_group("Player")

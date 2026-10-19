@@ -17,9 +17,11 @@ transparency = 1
 albedo_color = Color(0.7046649, 0.351262, 1.92523e-07, 0.78039217)
 
 [node name="Main" type="Node3D" unique_id=805683057]
-script = ExtResource("1_4c3ey")
 
 [node name="RefuelingArea" type="Area3D" parent="." unique_id=938338751]
+collision_layer = 0
+monitorable = false
+script = ExtResource("1_4c3ey")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RefuelingArea" unique_id=851073016]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00044250488, 0.28479004, 0.005273819)

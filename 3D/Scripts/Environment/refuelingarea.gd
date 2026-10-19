@@ -1,6 +1,7 @@
 extends Area3D
 
-@export_range(0.0, 100.0, 1.0) var refuel_rate: float = 20.0
+@export_range(0.0, 100.0, 1.0)
+var refuel_rate: float = 10.0
 
 
 func _ready() -> void:
