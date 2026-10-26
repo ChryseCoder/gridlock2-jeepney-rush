@@ -125,10 +125,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_2nccc")
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_xmqnk"]
-height = 6.9999995
-radius = 0.12890625
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eujoi"]
 resource_name = "insulator"
 cull_mode = 2
@@ -230,19 +226,5 @@ shadow_mesh = SubResource("ArrayMesh_gkndw")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
 mesh = SubResource("ArrayMesh_4gu35")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="HALF_SPAN_RIGHT" unique_id=2075259103]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.87408125, 3.4999998, -8.867384)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HALF_SPAN_RIGHT/StaticBody3D" unique_id=1161389218]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.7551775, -9.861974, 0.010321856)
-shape = SubResource("CylinderShape3D_xmqnk")
-
 [node name="NO_WIRES" type="MeshInstance3D" parent="." unique_id=1401323642]
 mesh = SubResource("ArrayMesh_51ke8")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="NO_WIRES" unique_id=1017830945]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1828195, 3.4999998, 0.81018597)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NO_WIRES/StaticBody3D" unique_id=579667755]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7540482, 0, 0.010322452)
-shape = SubResource("CylinderShape3D_xmqnk")
