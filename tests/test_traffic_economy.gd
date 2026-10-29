@@ -126,8 +126,6 @@ func run() -> void:
 
 	var result: Dictionary = session.finish_level()
 	check(result.cash == 0 and result.unpaid_fines == 20000 and result.fuel_penalty, "unaffordable fines consume available cash and apply next-level penalty")
-	var saved := ConfigFile.new()
-	check(saved.load(session.SAVE_PATH) == OK and saved.get_value("campaign", "points") == 5 and saved.get_value("campaign", "fuel_penalty") == true, "completed points and fuel penalty are saved to disk")
 	var again: Dictionary = session.finish_level()
 	check(again == result and session.cash == 0, "settlement is idempotent")
 	session.begin_level()

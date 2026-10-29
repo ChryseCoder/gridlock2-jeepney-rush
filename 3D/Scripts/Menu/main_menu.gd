@@ -10,6 +10,8 @@ func _ready():
 
 
 func _on_play_button_pressed():
+	DialogueManager.cancel_dialogue()
+	GameSession.reset_campaign()
 	get_tree().change_scene_to_file(game_scene)
 
 

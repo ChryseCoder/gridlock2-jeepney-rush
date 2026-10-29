@@ -31,6 +31,7 @@ func _on_next_pressed() -> void:
 	DialogueManager.cancel_dialogue()
 	get_tree().paused = false
 	if _next_level.is_empty():
+		GameSession.reset_campaign()
 		get_tree().reload_current_scene()
 	else:
 		get_tree().change_scene_to_file(_next_level)

@@ -1,9 +1,8 @@
 extends Node
-## Campaign state survives scene changes; completed runs are saved to disk.
+## Campaign state survives level changes within one run, never application restarts.
 signal changed
 signal enforcement_notice(message: String)
 
-const SAVE_PATH := "user://campaign.cfg"
 const STARTING_CASH := 10000 # All money is stored as integer centavos.
 const FARE := 1500
 const TICKET_FINE := 30000
@@ -25,12 +24,14 @@ var _opening_points: int = 0
 var _opening_penalty := false
 var _active_encounters: Dictionary = {}
 
-func _ready() -> void:
-	var save := ConfigFile.new()
-	if save.load(SAVE_PATH) == OK:
-		cash = maxi(0, int(save.get_value("campaign", "cash", STARTING_CASH)))
-		violation_points = maxi(0, int(save.get_value("campaign", "points", 0)))
-		pending_fuel_penalty = bool(save.get_value("campaign", "fuel_penalty", false))
+func reset_campaign() -> void:
+	cash = STARTING_CASH
+	violation_points = 0
+	pending_fuel_penalty = false
+	level_active = false
+	begin_level()
+	# A new run has not entered a level yet.
+	level_active = false
 
 func begin_level() -> void:
 	# Reloading an unfinished level restores its opening state, preventing farming.
@@ -140,18 +141,8 @@ func finish_level() -> Dictionary:
 	}
 	level_active = false
 	_active_encounters.clear()
-	_save_campaign()
 	changed.emit()
 	return last_results.duplicate()
-
-func _save_campaign() -> void:
-	var save := ConfigFile.new()
-	save.set_value("campaign", "cash", cash)
-	save.set_value("campaign", "points", violation_points)
-	save.set_value("campaign", "fuel_penalty", pending_fuel_penalty)
-	var error := save.save(SAVE_PATH)
-	if error != OK:
-		push_warning("Campaign progress could not be saved: %s" % error)
 
 func money(centavos: int) -> String:
 	return "₱%s%.2f" % ["-" if centavos < 0 else "", absf(centavos) / 100.0]

@@ -60,9 +60,9 @@ All balances use integer centavos; fractional fuel charges accumulate before rou
 - Completion deducts fines from available cash, including the opening balance. The results show starting cash, passenger earnings, fuel purchases, total fines, net income, carried cash, persistent violation points, tickets, and evasions.
 - **Net income = passenger earnings − fuel purchases − total fines.** It can be negative. **Cash carried forward** is the actual nonnegative remaining wallet balance.
 - If cash cannot cover all fines, cash becomes zero and the **next level starts at 75% of maximum fuel**. The unpaid shortfall is cleared in exchange for that one-level penalty; it is not collected twice. A later unaffordable fine can impose a new penalty.
-- Cash, points, and pending fuel penalties survive scene changes and are saved on successful completion to `user://campaign.cfg`.
-- Retrying or reopening an unfinished run restores that run's opening cash, points, and fuel penalty. This avoids repeated fare farming. An application restart resumes the last completed campaign state.
-- For a completely fresh campaign during manual testing, remove `campaign.cfg` from Godot's **Project → Open User Data Folder** while the game is closed.
+- Cash, points, and pending fuel penalties carry into the next level **only within the current run**. No campaign data is read from or written to disk. Old `user://campaign.cfg` files from earlier builds are ignored.
+- Retrying an unfinished level restores that level's opening cash, points, and fuel penalty. This avoids repeated fare farming.
+- A fresh game process, main-menu **Play**, or results-screen **Drive again** starts a fresh run with **₱100, zero violations, and no fuel penalty**. Closing the game or stopping it in Godot ends the run.
 
 ## Completion and UI nodes
 
@@ -82,21 +82,22 @@ GameMap
 
 The old `HUD/MissionComplete` instance is replaced by `HUD/LevelResults`; the original completion scene/script remain available for legacy scenes. `HUD/MissionFailed` is retained. `PauseMenu.results_window` and `MissionManager.results_window` reference the new results control.
 
-For another level, instance the HUD/results scenes, add/configure its mission manager and passengers, and assign the manager's **Next Level Scene**. With no next level assigned, the button reads **Drive again** and replays the current map as a new run with carried campaign state. No second level was invented.
+For another level, instance the HUD/results scenes, add/configure its mission manager and passengers, and assign the manager's **Next Level Scene**. With no next level assigned, the button reads **Drive again** and replays the current map as a fresh run with ₱100 and zero violations. No second level was invented.
 
-The pause menu cannot unpause a completed level behind the results screen. Returning to the main menu retains the earlier dialogue cleanup fix. Dialogue cancellation now invalidates old delayed callbacks, allowing an enforcer to safely interrupt passenger chatter.
+The pause menu cannot unpause a completed level behind the results screen. Returning to the main menu retains the earlier dialogue cleanup fix. Dialogue lives on its own persistent CanvasLayer above the level HUD. A cancelable frame-driven state machine replaces delayed dialogue callbacks; replay, retry, and level initialization clear the previous dialogue before starting again.
 
 ## File inventory
 
 Added:
 
-- `3D/Scripts/Singleton/GameSession.gd` — persistent economy, incident ownership, ticket/evasion accounting, settlement; registered as an autoload in `project.godot`.
+- `3D/Scripts/Singleton/GameSession.gd` — economy carried between levels in a run, incident ownership, ticket/evasion accounting, settlement; registered as an autoload in `project.godot`.
 - `3D/Scripts/NPC/traffic_enforcer.gd` and `3D/Scenes/NPC/TrafficEnforcer.tscn` — modular NPC and state machine.
 - `3D/Scripts/HUD/economy_hud.gd` and `3D/Scenes/HUD/EconomyHUD.tscn` — cash, pending fines, points, remaining mission passengers, enforcement notices, station pricing.
 - `3D/Scripts/HUD/level_results.gd` and `3D/Scenes/Menu/LevelResults.tscn` — results, next-level/replay, main-menu actions.
 - `3D/Assets/Audio/enforcer_whistle.wav` and its `.import` metadata.
 - Godot `.uid` sidecars for new scripts.
-- `tests/test_traffic_economy.gd` — headless integration coverage.
+- `tests/test_traffic_economy.gd` — headless economy and enforcement integration coverage.
+- `tests/test_replay_lifecycle.gd` — fresh-process, replay, next-level, menu, retry, and dialogue-overlay regressions.
 - `docs/traffic-enforcer.md` — this setup guide and change inventory.
 
 Modified:
@@ -108,21 +109,25 @@ Modified:
 - `3D/Scripts/Environment/refuelingarea.gd` — inspector price and paid fuel purchases.
 - `3D/Scripts/Mission/mission_manager.gd` — level initialization, mission delivery tracking, completion settlement, results integration.
 - `3D/Scripts/Menu/pause_menu.gd` — prevent resuming behind results.
-- `3D/Scripts/Singleton/DialogueManager.gd` — protect replacement dialogue from stale timer callbacks.
+- `3D/Scripts/Singleton/DialogueManager.gd` — dedicated overlay and cancelable dialogue playback across replay/retry.
+- `3D/Scripts/Menu/main_menu.gd` — start a fresh campaign when Play is pressed.
 - `project.godot` — GameSession autoload.
 
 The previously deferred NPC traffic-height issue remains untouched.
 
 ## Verification
 
-The headless integration test exercises real player, station, enforcer, passenger, GameMap, and result scenes. It covers fares, movement/full-tank/no-cash fuel rules, fractional billing, overlapping stations, sight obstruction, nearest-enforcer ownership, duplicate incident prevention, approach and return movement, accepted tickets, repeated evasions, settlement, saved progress, next-level fuel penalties, retries, legal/illegal pickup and drop-off wiring, and results/pause behavior.
+The headless integration test exercises real player, station, enforcer, passenger, GameMap, and result scenes. It covers fares, movement/full-tank/no-cash fuel rules, fractional billing, overlapping stations, sight obstruction, nearest-enforcer ownership, duplicate incident prevention, approach and return movement, accepted tickets, repeated evasions, settlement, next-level fuel penalties, retries, legal/illegal pickup and drop-off wiring, and results/pause behavior.
 
 Run after importing the project:
 
 ```sh
 godot --headless --editor --import --path .
-# Use a disposable XDG_DATA_HOME to avoid modifying your real campaign save.
+# Use a disposable XDG_DATA_HOME for test data, including the legacy-save fixture.
 XDG_DATA_HOME="$PWD/work/test-runtime/data" godot --headless --path . --script tests/test_traffic_economy.gd
+XDG_DATA_HOME="$PWD/work/test-runtime/data" godot --headless --path . --script tests/test_replay_lifecycle.gd -- --seed-legacy
+XDG_DATA_HOME="$PWD/work/test-runtime/data" godot --headless --path . --script tests/test_replay_lifecycle.gd
+# Repeat the last command as a second process: no prior run should persist.
 ```
 
 Validated with Godot 4.6.3. The project declares 4.7; visual appearance, whistle volume, and final difficulty should be playtested in the target editor.

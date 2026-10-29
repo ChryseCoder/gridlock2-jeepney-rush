@@ -1,91 +1,97 @@
-extends Node
+extends CanvasLayer
+## A persistent overlay above level HUDs. No delayed callbacks survive cancellation.
 
-
-@onready var text_box_scene = preload("res://3D/Scenes/Dialogue/dialogue.tscn")
-
+const TEXT_BOX_SCENE := preload("res://3D/Scenes/Dialogue/dialogue.tscn")
+const LINE_HOLD_TIME := 1.5
+const DIALOGUE_GAP := 0.2
 
 var dialog_lines: Array[String] = []
 var dialogue_queue: Array[Dictionary] = []
-var current_line_index = 0
+var current_line_index := 0
+var text_box: Control
+var text_box_position := Vector2(24, 24)
+var is_dialog_active := false
+var can_advance_line := false
+var _generation := 0
+var _line_hold_left := -1.0
+var _gap_left := -1.0
 
-var text_box
-var text_box_position: Vector2
+func _ready() -> void:
+	layer = 100
 
-var is_dialog_active = false
-var can_advance_line = false
-var _generation: int = 0
-
-
-func start_dialog(position: Vector2, lines: Array[String]):
-	if lines.is_empty():
+func start_dialog(position: Vector2, lines: Array[String]) -> void:
+	var nonempty_lines: Array[String] = []
+	for line in lines:
+		if not line.is_empty():
+			nonempty_lines.append(line)
+	if nonempty_lines.is_empty():
 		return
-	dialogue_queue.append({
-		"position": position,
-		"lines": lines
-	})
+	dialogue_queue.append({"position": position, "lines": nonempty_lines})
+	if not is_dialog_active:
+		_start_next_dialogue()
 
-	if is_dialog_active:
-		return
+func _process(delta: float) -> void:
+	if _line_hold_left >= 0.0:
+		_line_hold_left -= delta
+		if _line_hold_left <= 0.0:
+			_line_hold_left = -1.0
+			_advance_line()
+	elif _gap_left >= 0.0:
+		_gap_left -= delta
+		if _gap_left <= 0.0:
+			_gap_left = -1.0
+			_start_next_dialogue()
 
-	_start_next_dialogue()
-	
-func _show_text_box():
-	text_box = text_box_scene.instantiate()
-	text_box.finished_displaying.connect(_on_text_box_finished_displaying)
-	get_tree().root.add_child(text_box)
+func _show_text_box() -> void:
+	_discard_text_box()
+	text_box = TEXT_BOX_SCENE.instantiate()
+	add_child(text_box)
 	text_box.global_position = Vector2(24, 24)
-	text_box.display_text(dialog_lines[current_line_index])
+	text_box.finished_displaying.connect(_on_text_box_finished_displaying.bind(_generation))
 	can_advance_line = false
-	
-func _on_text_box_finished_displaying():
-	print("Dialogue line finished!")
-	can_advance_line = true
+	text_box.display_text(dialog_lines[current_line_index])
 
-	var generation := _generation
-	await get_tree().create_timer(1.5).timeout
-
+func _on_text_box_finished_displaying(generation: int) -> void:
 	if generation != _generation or not is_dialog_active:
 		return
+	can_advance_line = true
+	_line_hold_left = LINE_HOLD_TIME
 
-	if is_instance_valid(text_box):
-		text_box.queue_free()
-
+func _advance_line() -> void:
+	_discard_text_box()
+	can_advance_line = false
 	current_line_index += 1
-
-	if current_line_index >= dialog_lines.size():
+	if current_line_index < dialog_lines.size():
+		_show_text_box()
+	else:
 		current_line_index = 0
+		dialog_lines.clear()
+		_gap_left = DIALOGUE_GAP
 
-		await get_tree().create_timer(0.2).timeout
-		if generation != _generation:
-			return
-		_start_next_dialogue()
-		return
-
-	_show_text_box()
-
-func _start_next_dialogue():
+func _start_next_dialogue() -> void:
 	if dialogue_queue.is_empty():
 		is_dialog_active = false
 		return
-
-	var next_dialogue = dialogue_queue.pop_front()
-
-	dialog_lines = next_dialogue["lines"]
+	var next_dialogue: Dictionary = dialogue_queue.pop_front()
+	dialog_lines.assign(next_dialogue["lines"])
 	text_box_position = next_dialogue["position"]
 	current_line_index = 0
 	is_dialog_active = true
-
 	_show_text_box()
 
-func cancel_dialogue():
+func _discard_text_box() -> void:
+	if is_instance_valid(text_box):
+		text_box.hide()
+		text_box.queue_free()
+	text_box = null
+
+func cancel_dialogue() -> void:
 	_generation += 1
+	_line_hold_left = -1.0
+	_gap_left = -1.0
 	is_dialog_active = false
 	can_advance_line = false
 	current_line_index = 0
 	dialog_lines.clear()
 	dialogue_queue.clear()
-
-	if is_instance_valid(text_box):
-		text_box.queue_free()
-
-	text_box = null
+	_discard_text_box()

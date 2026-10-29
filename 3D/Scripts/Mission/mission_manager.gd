@@ -12,6 +12,7 @@ var remaining_mission_passengers: int = 0
 var _initialized := false
 
 func _ready() -> void:
+	DialogueManager.cancel_dialogue()
 	GameSession.begin_level()
 	call_deferred("_initialize_level")
 
