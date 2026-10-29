@@ -1,35 +1,34 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://jcjgs5hooi5n"]
 
-[ext_resource type="Script" path="res://3D/Scripts/NPC/traffic_enforcer.gd" id="1"]
-[ext_resource type="PackedScene" path="res://3D/Scenes/NPC/PassengerVisual.tscn" id="2"]
+[ext_resource type="Script" uid="uid://pluqhabomhmd" path="res://3D/Scripts/NPC/traffic_enforcer.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://clauhdhj5rqa6" path="res://3D/Scenes/NPC/PassengerVisual.tscn" id="2"]
 
 [sub_resource type="BoxShape3D" id="Body"]
 size = Vector3(0.09, 0.024, 0.18)
 
-[node name="TrafficEnforcer" type="CharacterBody3D"]
-scale = Vector3(2.5, 2.5, 2.5)
+[node name="TrafficEnforcer" type="CharacterBody3D" unique_id=751800488]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1")
 
-[node name="PassengerVisual" parent="." instance=ExtResource("2")]
+[node name="PassengerVisual" parent="." unique_id=1533626315 instance=ExtResource("2")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-position = Vector3(0, 0.0014, 0.033)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2123847514]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0014, 0.033)
 shape = SubResource("Body")
 
-[node name="Whistle" type="AudioStreamPlayer3D" parent="."]
-volume_db = -6.0
+[node name="Whistle" type="AudioStreamPlayer3D" parent="." unique_id=1922247294]
+volume_db = 6.0
 unit_size = 12.0
+max_db = 6.0
 max_distance = 45.0
 bus = &"SFX"
 
-[node name="Status" type="Label3D" parent="."]
-position = Vector3(0, 0.3, -0.2)
-rotation_degrees = Vector3(-90, 0, 0)
+[node name="Status" type="Label3D" parent="." unique_id=1520560870]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.3, -0.2)
 pixel_size = 0.003
-font_size = 20
-outline_size = 5
+no_depth_test = true
 modulate = Color(0.95, 0.8, 0.15, 1)
 text = "ENFORCER"
-no_depth_test = true
+font_size = 20
+outline_size = 5

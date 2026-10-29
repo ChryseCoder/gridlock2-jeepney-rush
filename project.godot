@@ -18,7 +18,6 @@ config/icon="res://2D (Legacy Gridlock)/Assets/Images/Sprites/Player/icon.svg"
 [autoload]
 
 GameSession="*res://3D/Scripts/Singleton/GameSession.gd"
-
 TrafficManager="*uid://4h0060gvww73"
 DialogueManager="*uid://bnahdtyscn8t"
 

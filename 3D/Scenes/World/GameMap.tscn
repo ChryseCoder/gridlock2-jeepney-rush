@@ -33,7 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://e0hxmmayt2l8" path="res://3D/Assets/Images/Icons/Traffic/gas_pump.png" id="24_qvqqm"]
 [ext_resource type="PackedScene" uid="uid://bu4t2ainw4g20" path="res://3D/Scenes/HUD/minimap.tscn" id="26_0soa2"]
 [ext_resource type="MeshLibrary" uid="uid://l01qenpkc87f" path="res://3D/Assets/Models/meshlibrary/epoles.meshlib" id="32_7qnu0"]
-
+[ext_resource type="AudioStream" uid="uid://bal8nthbv7ak0" path="res://3D/Assets/Audio/enforcer_whistle2.wav" id="37_6n616"]
 [ext_resource type="PackedScene" path="res://3D/Scenes/NPC/TrafficEnforcer.tscn" id="40_enforcer"]
 [ext_resource type="PackedScene" path="res://3D/Scenes/HUD/EconomyHUD.tscn" id="41_economy"]
 [ext_resource type="PackedScene" path="res://3D/Scenes/Menu/LevelResults.tscn" id="42_results"]
@@ -872,9 +872,12 @@ grow_vertical = 2
 mission_failed_window = NodePath("../MissionFailed")
 results_window = NodePath("../LevelResults")
 
-[node name="EconomyHUD" parent="HUD" instance=ExtResource("41_economy")]
+[node name="EconomyHUD" parent="HUD" unique_id=1375781560 instance=ExtResource("41_economy")]
+anchors_preset = 1
 
-[node name="LevelResults" parent="HUD" instance=ExtResource("42_results")]
+[node name="LevelResults" parent="HUD" unique_id=997478232 instance=ExtResource("42_results")]
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MissionFailed" parent="HUD" unique_id=94073719 instance=ExtResource("24_2f5bb")]
 visible = false
@@ -891,7 +894,6 @@ legal_dropoff = false
 [node name="Passenger" parent="." unique_id=2097775546 instance=ExtResource("7_0mkmq")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -419.22617)
 destination_id = &"North Terminal"
-legal_pickup = false
 
 [node name="Passenger2" parent="." unique_id=2042538772 instance=ExtResource("7_0mkmq")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -418.04633)
@@ -920,12 +922,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -440.002, 1.95, -439.986)
 [node name="MarginBottomRight" type="Marker3D" parent="MinimapBorders" unique_id=782523846]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 440, 1.95, 440)
 
-[node name="TrafficEnforcers" type="Node3D" parent="."]
+[node name="TrafficEnforcers" type="Node3D" parent="." unique_id=571170414]
 
-[node name="PickupEnforcer" parent="TrafficEnforcers" instance=ExtResource("40_enforcer")]
-position = Vector3(260.0, 2.2354736, -416.0)
+[node name="PickupEnforcer" parent="TrafficEnforcers" unique_id=1422393982 instance=ExtResource("40_enforcer")]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 260, 2.2354736, -416)
 
-[node name="SchoolEnforcer" parent="TrafficEnforcers" instance=ExtResource("40_enforcer")]
-position = Vector3(263.0, 2.2354736, -209.0)
+[node name="SchoolEnforcer" parent="TrafficEnforcers" unique_id=722726996 instance=ExtResource("40_enforcer")]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.02026, 2.2354736, -211.28484)
+whistle_sound = ExtResource("37_6n616")
 
 [editable path="HUD/Minimap"]
