@@ -10,18 +10,17 @@ texture = ExtResource("1_7tfik")
 
 [node name="MissionFailed" type="PanelContainer" unique_id=94073719]
 process_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 220.0
-offset_top = 56.0
-offset_right = -223.0
-offset_bottom = -88.0
+anchors_preset = -1
+anchor_left = 0.19097222
+anchor_top = 0.086419754
+anchor_right = 0.8064236
+anchor_bottom = 0.86419755
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_teffq")
 script = ExtResource("2_0tmi4")
 main_menu_scene = "uid://dgmb8tg0ivy5u"
+metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="Control" parent="." unique_id=2008357461]
 layout_mode = 2
