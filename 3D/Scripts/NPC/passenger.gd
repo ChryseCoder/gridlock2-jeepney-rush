@@ -20,6 +20,15 @@ var _last_target: Vector3
 @export var legal_pickup: bool = true
 @export var is_mission_passenger: bool = true
 
+@export_group("Appearance")
+## Disable to use the selected SpriteFrames. Empty slots use the default character layers.
+@export var randomize_appearance: bool = true
+## SpriteFrames resources containing all eight idle/walk direction animations.
+@export var body_sprite_frames: SpriteFrames
+@export var outfit_sprite_frames: SpriteFrames
+@export var hair_sprite_frames: SpriteFrames
+@export var outfit_tint: Color = Color.WHITE
+
 @onready var visual = $PassengerVisual
 @onready var marker_visual = $MarkerVisual
 
@@ -37,6 +46,10 @@ var _exit_vehicle: CharacterBody3D = null
 
 
 func _ready():
+	visual.configure_appearance(
+		randomize_appearance, body_sprite_frames, outfit_sprite_frames,
+		hair_sprite_frames, outfit_tint
+	)
 	add_to_group("MinimapPassengers")
 	if can_board and is_mission_passenger:
 		add_to_group("MissionPassengers")

@@ -28,7 +28,7 @@ TrafficEnforcer (CharacterBody3D, traffic_enforcer.gd)
 └── Status (Label3D)
 ```
 
-The blue-tinted uniform and status label distinguish it from passengers. Replace the visual or whistle resource as desired, retaining the named children/interfaces. The bundled whistle is an original synthesized two-tone WAV.
+The blue-tinted uniform and status label distinguish it from passengers. Both Passenger and TrafficEnforcer root nodes now expose an **Appearance** Inspector group for random/fixed Body, Outfit, and Hair SpriteFrames plus an Outfit Tint. See [NPC Appearance Inspector](npc-appearance.md) for setup, defaults, and custom sprite requirements. Replace the visual or whistle resource as desired, retaining the named children/interfaces. The bundled whistle is an original synthesized two-tone WAV.
 
 Inspector settings:
 

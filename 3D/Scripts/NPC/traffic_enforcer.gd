@@ -19,6 +19,15 @@ enum State { IDLE, ALERT, PURSUING, TICKETING, RETURNING }
 @export_multiline var ticket_dialogue: String = "Akala mo lusot ka, boss? ₱300 'yan!"
 @export var whistle_sound: AudioStream = preload("res://3D/Assets/Audio/enforcer_whistle.wav")
 
+@export_group("Appearance")
+## Disable to use the selected SpriteFrames. Empty slots use the default character layers.
+@export var randomize_appearance: bool = true
+## SpriteFrames resources containing all eight idle/walk direction animations.
+@export var body_sprite_frames: SpriteFrames
+@export var outfit_sprite_frames: SpriteFrames
+@export var hair_sprite_frames: SpriteFrames
+@export var outfit_tint: Color = Color(0.2, 0.45, 1.0)
+
 @onready var visual = $PassengerVisual
 @onready var whistle: AudioStreamPlayer3D = $Whistle
 @onready var status: Label3D = $Status
@@ -34,11 +43,13 @@ var _path_index: int = 0
 var _refresh: float = 0.0
 
 func _ready() -> void:
+	visual.configure_appearance(
+		randomize_appearance, body_sprite_frames, outfit_sprite_frames,
+		hair_sprite_frames, outfit_tint
+	)
 	add_to_group("TrafficEnforcers")
 	home_position = global_position
 	pursuit_radius = maxf(pursuit_radius, detection_radius)
-	# A consistent blue uniform distinguishes enforcers from passengers.
-	visual.outfit.modulate = Color(0.2, 0.45, 1.0)
 	whistle.stream = whistle_sound
 	_set_state(State.IDLE)
 
