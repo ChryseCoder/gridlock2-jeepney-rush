@@ -10,7 +10,7 @@ Run `3D/Scenes/World/GameMap.tscn` or press Play in the main menu.
 - **School** has **Legal Dropoff** disabled. North Terminal is legal.
 - `TrafficEnforcers/PickupEnforcer` watches the pickup area. `SchoolEnforcer` watches School.
 - Stopping for an illegal pickup or starting an illegal drop-off triggers the nearest idle enforcer with range and line of sight. An illegal stop without a witness carries no penalty.
-- The whistle plays first. The enforcer approaches using the existing passenger obstacle pathfinder. Stop and remain near it through its dialogue to accept the ticket. Driving away interrupts ticketing and starts pursuit.
+- The whistle plays first. The enforcer approaches using the existing passenger obstacle pathfinder. Once it reaches the stopped jeepney, the ticket is recorded immediately and the dialogue plays as feedback. Driving away during that line does not cancel the fine, restart the dialogue, or add an evasion. Driving away before ticket contact starts pursuit.
 - A ticket adds **₱300 in deferred fines and +1 violation point**. Escaping beyond the post's pursuit radius adds **+2 points and no fine**. Each later witnessed evasion adds another two points.
 - The enforcer returns to the position where its scene was placed, then becomes available again. A blocked approach to a driver who stayed put times out without falsely counting an evasion.
 
@@ -41,8 +41,8 @@ Inspector settings:
 | Path Refresh Interval | 0.7 seconds | Frequency of obstacle path recalculation |
 | Ticket Distance | 1.5 | Distance from the vehicle's boarding point for ticket delivery |
 | Alert Duration | 0.6 seconds | Whistle lead-in |
-| Ticket Duration | 1.5 seconds | Minimum stopped acceptance time; the dialogue must also finish |
-| Ticket Dialogue | “Akala mo lusot ka, boss? ₱300 'yan!” | Cocky ticket line, shown before the fine is recorded |
+| Ticket Duration | 1.5 seconds | Post-ticket pause before returning to the post; does not delay recording the ticket |
+| Ticket Dialogue | “Akala mo lusot ka, boss? ₱300 'yan!” | Cocky ticket line shown after the ticket is recorded |
 | Whistle Sound | Bundled WAV | Replaceable AudioStream |
 
 Pursuit radius is clamped to at least detection radius. Multiple nearby enforcers claim one encounter per vehicle, avoiding duplicate tickets for the same pickup/drop-off.

@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 	match state:
 		State.IDLE:
 			velocity = Vector3.ZERO
-		State.ALERT, State.PURSUING, State.TICKETING:
+		State.ALERT, State.PURSUING:
 			if not is_instance_valid(target_vehicle):
 				GameSession.abandon_encounter(_vehicle_id, self)
 				_return_home()
@@ -107,22 +107,26 @@ func _physics_process(delta: float) -> void:
 			var distance := global_position.distance_to(target_vehicle.boarding_point.global_position)
 			var stopped := absf(target_vehicle.speed) <= 0.1 and target_vehicle.velocity.length() <= 0.1
 			if distance <= ticket_distance and stopped and _can_see(target_vehicle):
-				if state != State.TICKETING:
-					_set_state(State.TICKETING)
-					DialogueManager.cancel_dialogue()
-					var lines: Array[String] = [ticket_dialogue]
-					DialogueManager.start_dialog(Vector2(24, 24), lines)
-				velocity = Vector3.ZERO
-				visual.play_animation("idle_down")
-				_ticket_elapsed += delta
-				if _ticket_elapsed >= ticket_duration and not DialogueManager.is_dialog_active:
-					GameSession.resolve_encounter(_vehicle_id, self, false)
+				# Commit the ticket once on contact, before starting the dialogue.
+				if not GameSession.resolve_encounter(_vehicle_id, self, false):
 					_return_home()
+					return
+				_set_state(State.TICKETING)
+				_ticket_elapsed = 0.0
+				visual.play_animation("idle_down")
+				DialogueManager.cancel_dialogue()
+				var lines: Array[String] = [ticket_dialogue]
+				DialogueManager.start_dialog(Vector2(24, 24), lines)
 			else:
 				_ticket_elapsed = 0.0
 				if state != State.PURSUING:
 					_set_state(State.PURSUING)
 				_move_to(target_vehicle.boarding_point.global_position, ticket_distance * 0.8, delta)
+		State.TICKETING:
+			# This encounter is already settled; driving away cannot reopen it.
+			_ticket_elapsed += delta
+			if _ticket_elapsed >= ticket_duration:
+				_return_home()
 		State.RETURNING:
 			var distance := global_position.distance_to(home_position)
 			if distance < 0.15:

@@ -35,6 +35,7 @@ func start_ticket(level: Node) -> void:
 	check(session.report_illegal_stop(player, player), "enforcer claims the stop in this run")
 	officer._physics_process(0.7)
 	check(officer.state == officer.State.TICKETING and dialogue.is_dialog_active, "ticket starts fresh dialogue")
+	check(session.tickets == 1 and session.fines == 30000 and session.violation_points >= 1 and not session.has_active_encounters(), "ticket is committed before dialogue finishes")
 	check(is_instance_valid(dialogue.text_box) and dialogue.text_box.is_visible_in_tree(), "enforcer dialogue box is visible")
 	check(dialogue.text_box.get_canvas_layer_node() == dialogue and dialogue.layer > level.get_node("HUD").layer, "dialogue renders on a dedicated layer above the level HUD")
 	await frames(3)
@@ -42,13 +43,29 @@ func start_ticket(level: Node) -> void:
 
 func accept_ticket(level: Node) -> void:
 	await start_ticket(level)
+	var player = level.get_node("Player")
+	var officer = level.get_node("TrafficEnforcers/PickupEnforcer")
+	var original_position: Vector3 = player.global_position
+	var original_box = dialogue.text_box
+	var original_generation: int = dialogue._generation
+	player.global_position += Vector3(3, 0, 0)
+	player.speed = 3.0
+	officer._physics_process(0.1)
+	player.global_position = original_position
+	player.speed = 0.0
+	officer._physics_process(0.1)
+	check(dialogue.text_box == original_box and dialogue._generation == original_generation, "short drive-off and return do not restart the ticket dialogue")
+	player.global_position += Vector3(100, 0, 0)
+	officer._physics_process(0.1)
+	check(session.tickets == 1 and session.fines == 30000 and session.evasions == 0, "driving away mid-dialogue neither avoids the ticket nor adds an evasion")
+	player.global_position = original_position
 	for index in range(180):
 		if not dialogue.is_dialog_active:
 			break
 		await physics_frame
 	check(not dialogue.is_dialog_active, "ticket dialogue completes normally")
 	level.get_node("TrafficEnforcers/PickupEnforcer")._physics_process(1.6)
-	check(session.tickets == 1 and session.fines == 30000, "ticket is recorded once after its dialogue")
+	check(session.tickets == 1 and session.fines == 30000, "ticket remains recorded exactly once after its dialogue")
 
 func run() -> void:
 	Engine.time_scale = 5.0
