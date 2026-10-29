@@ -225,7 +225,7 @@ func _update_collision_dialogue(
 	DialogueManager.start_dialog(dialog_position, lines)
 
 
-func add_passenger(destination_id: StringName, appearance: Dictionary):
+func add_passenger(destination_id: StringName, appearance: Dictionary, is_mission_passenger: bool = false):
 	var arrow = null
 
 	if destination_arrows.has(destination_id):
@@ -241,6 +241,7 @@ func add_passenger(destination_id: StringName, appearance: Dictionary):
 	passengers.append({
 		"destination_id": destination_id,
 		"appearance": appearance,
+		"is_mission_passenger": is_mission_passenger,
 	})
 
 	passenger_count = passengers.size()
@@ -255,6 +256,15 @@ func release_passengers(destination: Node3D):
 	if is_releasing_passengers:
 		return
 
+	var has_matching_passenger := false
+	for data in passengers:
+		if data["destination_id"] == destination.destination_id:
+			has_matching_passenger = true
+			break
+	if not has_matching_passenger:
+		return
+	if not destination.legal_dropoff:
+		GameSession.report_illegal_stop(self, destination)
 	is_releasing_passengers = true
 
 	var index := 0
@@ -264,6 +274,7 @@ func release_passengers(destination: Node3D):
 
 		if passenger_data["destination_id"] == destination.destination_id:
 			var passenger = passenger_scene.instantiate()
+			passenger.is_mission_passenger = passenger_data.get("is_mission_passenger", false)
 
 			# Position and protect the passenger before entering the physics world.
 			var level := get_tree().current_scene as Node3D
@@ -285,6 +296,7 @@ func release_passengers(destination: Node3D):
 			
 			passengers.remove_at(index)
 			passenger_count = passengers.size()
+			GameSession.award_fare()
 # Award once, after this passenger leaves the onboard manifest.
 			var mission_timer = get_tree().get_first_node_in_group("MissionTimer")
 

@@ -3,6 +3,8 @@ extends Area3D
 @onready var entry_point: Marker3D = $EntryPoint
 
 @export var destination_id: StringName
+@export_group("Stop Rules")
+@export var legal_dropoff: bool = true
 
 @onready var marker_visual = $MarkerVisual
 

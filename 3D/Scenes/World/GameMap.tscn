@@ -28,12 +28,15 @@
 [ext_resource type="PackedScene" uid="uid://bhl2k70ct3e42" path="res://3D/Scenes/Menu/pause_menu.tscn" id="21_xlwa8"]
 [ext_resource type="Script" uid="uid://cpgkbsuwdhxlt" path="res://3D/Scripts/Environment/marker_visual.gd" id="22_2sx5p"]
 [ext_resource type="Script" uid="uid://bf0rxoysmih57" path="res://3D/Scripts/Environment/refuelingarea.gd" id="22_cdyh3"]
-[ext_resource type="PackedScene" uid="uid://dcvx5ohve1yp7" path="res://3D/Scenes/Menu/mission_complete.tscn" id="22_v50gu"]
 [ext_resource type="PackedScene" uid="uid://bestwa4k6a21j" path="res://3D/Scenes/Menu/mission_failed.tscn" id="24_2f5bb"]
 [ext_resource type="Script" uid="uid://c2d13hjkcj57y" path="res://3D/Scripts/Mission/mission_manager.gd" id="24_os6ma"]
 [ext_resource type="Texture2D" uid="uid://e0hxmmayt2l8" path="res://3D/Assets/Images/Icons/Traffic/gas_pump.png" id="24_qvqqm"]
 [ext_resource type="PackedScene" uid="uid://bu4t2ainw4g20" path="res://3D/Scenes/HUD/minimap.tscn" id="26_0soa2"]
 [ext_resource type="MeshLibrary" uid="uid://l01qenpkc87f" path="res://3D/Assets/Models/meshlibrary/epoles.meshlib" id="32_7qnu0"]
+
+[ext_resource type="PackedScene" path="res://3D/Scenes/NPC/TrafficEnforcer.tscn" id="40_enforcer"]
+[ext_resource type="PackedScene" path="res://3D/Scenes/HUD/EconomyHUD.tscn" id="41_economy"]
+[ext_resource type="PackedScene" path="res://3D/Scenes/Menu/LevelResults.tscn" id="42_results"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lxtvu"]
 sky_top_color = Color(0.31409365, 0.5585264, 0.9870283, 1)
@@ -865,11 +868,13 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PauseMenu" parent="HUD" unique_id=104890076 node_paths=PackedStringArray("mission_failed_window") instance=ExtResource("21_xlwa8")]
+[node name="PauseMenu" parent="HUD" unique_id=104890076 node_paths=PackedStringArray("mission_failed_window", "results_window") instance=ExtResource("21_xlwa8")]
 mission_failed_window = NodePath("../MissionFailed")
+results_window = NodePath("../LevelResults")
 
-[node name="MissionComplete" parent="HUD" unique_id=1097724119 instance=ExtResource("22_v50gu")]
-visible = false
+[node name="EconomyHUD" parent="HUD" instance=ExtResource("41_economy")]
+
+[node name="LevelResults" parent="HUD" instance=ExtResource("42_results")]
 
 [node name="MissionFailed" parent="HUD" unique_id=94073719 instance=ExtResource("24_2f5bb")]
 visible = false
@@ -881,10 +886,12 @@ destination_id = &"North Terminal"
 [node name="Destination2" parent="." unique_id=667024040 instance=ExtResource("8_duwqk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 267.11572, 2.0690918, -212.46773)
 destination_id = &"School"
+legal_dropoff = false
 
 [node name="Passenger" parent="." unique_id=2097775546 instance=ExtResource("7_0mkmq")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -419.22617)
 destination_id = &"North Terminal"
+legal_pickup = false
 
 [node name="Passenger2" parent="." unique_id=2042538772 instance=ExtResource("7_0mkmq")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.17322, 2.2354736, -418.04633)
@@ -899,10 +906,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 304.6047, 2.1, -161.12367)
 [node name="Terminal3" parent="." unique_id=1508109567 instance=ExtResource("17_kdkc1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 316.41394, 2.1, -161.12367)
 
-[node name="MissionManager" type="Node3D" parent="." unique_id=1830415221 node_paths=PackedStringArray("mission_failed_window") groups=["MissionManager"]]
+[node name="MissionManager" type="Node3D" parent="." unique_id=1830415221 node_paths=PackedStringArray("mission_failed_window", "results_window") groups=["MissionManager"]]
 process_mode = 3
 script = ExtResource("24_os6ma")
 mission_failed_window = NodePath("../HUD/MissionFailed")
+results_window = NodePath("../HUD/LevelResults")
 
 [node name="MinimapBorders" type="Node3D" parent="." unique_id=1406980269]
 
@@ -911,5 +919,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -440.002, 1.95, -439.986)
 
 [node name="MarginBottomRight" type="Marker3D" parent="MinimapBorders" unique_id=782523846]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 440, 1.95, 440)
+
+[node name="TrafficEnforcers" type="Node3D" parent="."]
+
+[node name="PickupEnforcer" parent="TrafficEnforcers" instance=ExtResource("40_enforcer")]
+position = Vector3(260.0, 2.2354736, -416.0)
+
+[node name="SchoolEnforcer" parent="TrafficEnforcers" instance=ExtResource("40_enforcer")]
+position = Vector3(263.0, 2.2354736, -209.0)
 
 [editable path="HUD/Minimap"]

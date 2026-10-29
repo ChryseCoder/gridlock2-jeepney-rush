@@ -13,9 +13,12 @@ var text_box_position: Vector2
 
 var is_dialog_active = false
 var can_advance_line = false
+var _generation: int = 0
 
 
 func start_dialog(position: Vector2, lines: Array[String]):
+	if lines.is_empty():
+		return
 	dialogue_queue.append({
 		"position": position,
 		"lines": lines
@@ -38,9 +41,10 @@ func _on_text_box_finished_displaying():
 	print("Dialogue line finished!")
 	can_advance_line = true
 
+	var generation := _generation
 	await get_tree().create_timer(1.5).timeout
 
-	if not is_dialog_active:
+	if generation != _generation or not is_dialog_active:
 		return
 
 	if is_instance_valid(text_box):
@@ -49,10 +53,11 @@ func _on_text_box_finished_displaying():
 	current_line_index += 1
 
 	if current_line_index >= dialog_lines.size():
-		is_dialog_active = false
 		current_line_index = 0
 
 		await get_tree().create_timer(0.2).timeout
+		if generation != _generation:
+			return
 		_start_next_dialogue()
 		return
 
@@ -73,6 +78,7 @@ func _start_next_dialogue():
 	_show_text_box()
 
 func cancel_dialogue():
+	_generation += 1
 	is_dialog_active = false
 	can_advance_line = false
 	current_line_index = 0

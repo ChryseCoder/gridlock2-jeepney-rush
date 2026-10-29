@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://3D/Scripts/NPC/traffic_enforcer.gd" id="1"]
+[ext_resource type="PackedScene" path="res://3D/Scenes/NPC/PassengerVisual.tscn" id="2"]
+
+[sub_resource type="BoxShape3D" id="Body"]
+size = Vector3(0.09, 0.024, 0.18)
+
+[node name="TrafficEnforcer" type="CharacterBody3D"]
+scale = Vector3(2.5, 2.5, 2.5)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1")
+
+[node name="PassengerVisual" parent="." instance=ExtResource("2")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.0014, 0.033)
+shape = SubResource("Body")
+
+[node name="Whistle" type="AudioStreamPlayer3D" parent="."]
+volume_db = -6.0
+unit_size = 12.0
+max_distance = 45.0
+bus = &"SFX"
+
+[node name="Status" type="Label3D" parent="."]
+position = Vector3(0, 0.3, -0.2)
+rotation_degrees = Vector3(-90, 0, 0)
+pixel_size = 0.003
+font_size = 20
+outline_size = 5
+modulate = Color(0.95, 0.8, 0.15, 1)
+text = "ENFORCER"
+no_depth_test = true

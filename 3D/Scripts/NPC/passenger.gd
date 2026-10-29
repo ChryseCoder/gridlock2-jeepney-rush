@@ -16,6 +16,9 @@ var _last_target: Vector3
 @export var boarding_distance: float = 0.5
 @export var max_boarding_distance: float = 3.0
 @export var destination_id: StringName
+@export_group("Stop Rules")
+@export var legal_pickup: bool = true
+@export var is_mission_passenger: bool = true
 
 @onready var visual = $PassengerVisual
 @onready var marker_visual = $MarkerVisual
@@ -35,6 +38,8 @@ var _exit_vehicle: CharacterBody3D = null
 
 func _ready():
 	add_to_group("MinimapPassengers")
+	if can_board and is_mission_passenger:
+		add_to_group("MissionPassengers")
 	waiting_position = global_position
 	visual.play_animation("idle_down")
 
@@ -45,6 +50,8 @@ func _reset_path() -> void:
 
 func walk_to_jeepney(target_jeepney: CharacterBody3D):
 	jeepney = target_jeepney
+	if not legal_pickup:
+		GameSession.report_illegal_stop(jeepney, self)
 	_boarding_origin = jeepney.global_position
 
 	returning_to_wait = false
@@ -198,6 +205,7 @@ func board_jeepney():
 	jeepney.add_passenger(
 	destination_id,
 	visual.get_appearance(),
+	is_mission_passenger,
 	)
 	
 	var lines: Array[String] = [
@@ -219,6 +227,10 @@ func reach_destination():
 	walking = false
 	velocity = Vector3.ZERO
 
+	if is_mission_passenger:
+		var manager = get_tree().get_first_node_in_group("MissionManager")
+		if manager:
+			manager.passenger_arrived()
 	print("Passenger reached destination!")
 	queue_free()
 
