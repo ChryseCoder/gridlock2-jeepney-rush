@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://cdyv222jdjqjx" path="res://3D/Assets/HUD/Dialogue.png" id="2_gmov8"]
 
 [node name="Dialogue" type="MarginContainer" unique_id=1443571499]
-offset_right = 563.0
-offset_bottom = 81.0
+offset_right = 500.0
+offset_bottom = 80.0
 script = ExtResource("1_otsy6")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1620095532]

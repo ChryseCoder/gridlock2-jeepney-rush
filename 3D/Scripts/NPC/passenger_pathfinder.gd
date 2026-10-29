@@ -133,11 +133,11 @@ static func find_path(
 				continue
 
 			var length := 0.0
-			var previous := start_2d
+			var len_previous := start_2d
 
 			for point in candidate:
-				length += previous.distance_to(point)
-				previous = point
+				length += len_previous.distance_to(point)
+				len_previous = point
 
 			if length < best_length:
 				best = candidate

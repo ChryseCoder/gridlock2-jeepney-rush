@@ -16,7 +16,6 @@ var _last_target: Vector3
 @export var boarding_distance: float = 0.5
 @export var max_boarding_distance: float = 3.0
 @export var destination_id: StringName
-@export var is_mission_passenger: bool = false
 
 @onready var visual = $PassengerVisual
 @onready var marker_visual = $MarkerVisual
@@ -31,6 +30,8 @@ var nearby_jeepney: CharacterBody3D = null
 
 var waiting_position: Vector3
 var returning_to_wait: bool = false
+var _exit_vehicle: CharacterBody3D = null
+
 
 func _ready():
 	add_to_group("MinimapPassengers")
@@ -65,6 +66,7 @@ func walk_to_destination(target_position: Vector3):
 	marker_visual.hide()
 
 func _physics_process(delta):
+	_update_disembark_collision()
 	# A walking detour must not count as the jeepney driving away.
 	if walking and not walking_to_destination and not returning_to_wait:
 		if not is_instance_valid(jeepney):
@@ -196,7 +198,6 @@ func board_jeepney():
 	jeepney.add_passenger(
 	destination_id,
 	visual.get_appearance(),
-	is_mission_passenger
 	)
 	
 	var lines: Array[String] = [
@@ -219,14 +220,6 @@ func reach_destination():
 	velocity = Vector3.ZERO
 
 	print("Passenger reached destination!")
-	print("Mission passenger: ", is_mission_passenger)
-	
-	if is_mission_passenger:	
-		var mission_manager = get_tree().get_first_node_in_group("MissionManager")
-		
-		if mission_manager:
-			mission_manager.complete_mission()
-
 	queue_free()
 
 
@@ -252,3 +245,45 @@ func cancel_boarding():
 	returning_to_wait = true
 
 	marker_visual.hide()
+
+func prepare_disembarkation(source_vehicle: CharacterBody3D) -> void:
+	_exit_vehicle = source_vehicle
+
+	add_collision_exception_with(source_vehicle)
+	source_vehicle.add_collision_exception_with(self)
+
+
+func _update_disembark_collision() -> void:
+	if not is_instance_valid(_exit_vehicle):
+		_exit_vehicle = null
+		return
+
+	# Check whether the passenger is fully clear of the source jeepney.
+	var body_shape: CollisionShape3D = $CollisionShape3D
+	var query := PhysicsShapeQueryParameters3D.new()
+
+	query.shape = body_shape.shape
+	query.transform = body_shape.global_transform
+	query.margin = 0.08
+	query.collision_mask = _exit_vehicle.collision_layer
+	query.exclude = [get_rid()]
+
+	var space := get_world_3d().direct_space_state
+
+	for hit in space.intersect_shape(query, 64):
+		if hit["rid"] == _exit_vehicle.get_rid():
+			return
+
+	_clear_disembark_collision()
+
+
+func _clear_disembark_collision() -> void:
+	if is_instance_valid(_exit_vehicle):
+		remove_collision_exception_with(_exit_vehicle)
+		_exit_vehicle.remove_collision_exception_with(self)
+
+	_exit_vehicle = null
+
+
+func _exit_tree() -> void:
+	_clear_disembark_collision()

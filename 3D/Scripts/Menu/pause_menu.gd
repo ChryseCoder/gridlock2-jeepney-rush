@@ -2,7 +2,6 @@ extends Control
 
 @export_file("*.tscn") var main_menu_scene: String
 
-@export var mission_complete_window: Control
 @export var mission_failed_window: Control
 
 func _ready():
@@ -28,8 +27,6 @@ func _on_main_menu_button_pressed():
 	get_tree().change_scene_to_file(main_menu_scene)
 
 func _unhandled_input(event):
-	if mission_complete_window != null and mission_complete_window.visible:
-		return
 	if mission_failed_window != null and mission_failed_window.visible:
 		return
 
