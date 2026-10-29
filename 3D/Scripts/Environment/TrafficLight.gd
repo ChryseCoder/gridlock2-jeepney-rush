@@ -15,6 +15,20 @@ class_name TrafficLight
 @export var inactive_energy: float = 0.05
 
 
+@export_group("Camera Indicator")
+
+@export var signal_indicator: Sprite3D
+
+const SIGNAL_STOP: Texture2D = preload(
+	"res://3D/Assets/Images/Icons/Traffic/signal_stop.svg"
+)
+const SIGNAL_WAIT: Texture2D = preload(
+	"res://3D/Assets/Images/Icons/Traffic/signal_wait.svg"
+)
+const SIGNAL_GO: Texture2D = preload(
+	"res://3D/Assets/Images/Icons/Traffic/signal_go.svg"
+)
+
 var current_state: TrafficManager.LightState = TrafficManager.LightState.RED
 
 var red_material: StandardMaterial3D
@@ -48,6 +62,20 @@ func _prepare_materials() -> void:
 		Color(0.02, 1.0, 0.1)
 	)
 
+func _update_signal_indicator() -> void:
+	if not is_instance_valid(signal_indicator):
+		return
+
+	match current_state:
+		TrafficManager.LightState.RED:
+			signal_indicator.texture = SIGNAL_STOP
+
+		TrafficManager.LightState.YELLOW:
+			signal_indicator.texture = SIGNAL_WAIT
+
+		TrafficManager.LightState.GREEN:
+			signal_indicator.texture = SIGNAL_GO
+
 
 func _get_material_copy(mesh_instance: MeshInstance3D) -> StandardMaterial3D:
 	if mesh_instance == null:
@@ -80,14 +108,10 @@ func _setup_emission(
 	material.emission = color
 
 
-func set_state(
-	new_state: TrafficManager.LightState
-) -> void:
-
+func set_state(new_state: TrafficManager.LightState) -> void:
 	current_state = new_state
 
 	match current_state:
-
 		TrafficManager.LightState.RED:
 			_set_light_energy(
 				active_energy,
@@ -108,6 +132,8 @@ func set_state(
 				inactive_energy,
 				active_energy
 			)
+
+	_update_signal_indicator()
 
 
 func _set_light_energy(

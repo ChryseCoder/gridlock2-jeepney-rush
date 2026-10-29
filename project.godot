@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Gridlock 2"
+config/name="Gridlock 2 26 October 2026 01:58:21 PM"
 run/main_scene="uid://dgmb8tg0ivy5u"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://2D (Legacy Gridlock)/Assets/Images/Sprites/Player/icon.svg"
@@ -80,6 +80,7 @@ pause_game={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+jolt_physics_3d/limits/max_bodies=32768
 common/physics_interpolation=true
 
 [rendering]

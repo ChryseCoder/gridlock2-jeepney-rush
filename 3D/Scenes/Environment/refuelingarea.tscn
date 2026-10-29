@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bco1ua5a0rswj"]
+
+[ext_resource type="Script" uid="uid://bf0rxoysmih57" path="res://3D/Scripts/Environment/refuelingarea.gd" id="1_4c3ey"]
+[ext_resource type="Script" uid="uid://cpgkbsuwdhxlt" path="res://3D/Scripts/Environment/marker_visual.gd" id="1_eu1is"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2sx5p"]
+height = 0.52734375
+radius = 1.3251953
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ck0d8"]
+top_radius = 1.3251953
+bottom_radius = 1.3251953
+height = 0.533926
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxga0"]
+transparency = 1
+albedo_color = Color(0.7046649, 0.351262, 1.92523e-07, 0.78039217)
+
+[node name="Main" type="Node3D" unique_id=805683057]
+
+[node name="RefuelingArea" type="Area3D" parent="." unique_id=938338751]
+collision_layer = 0
+monitorable = false
+script = ExtResource("1_4c3ey")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RefuelingArea" unique_id=851073016]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00044250488, 0.28479004, 0.005273819)
+shape = SubResource("CylinderShape3D_2sx5p")
+
+[node name="MarkerVisual" type="MeshInstance3D" parent="RefuelingArea" unique_id=188768702]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.29512691, 0)
+mesh = SubResource("CylinderMesh_ck0d8")
+surface_material_override/0 = SubResource("StandardMaterial3D_nxga0")
+script = ExtResource("1_eu1is")

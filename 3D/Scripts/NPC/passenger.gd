@@ -1,10 +1,21 @@
 extends CharacterBody3D
 
+const Pathfinder = preload("res://3D/Scripts/NPC/passenger_pathfinder.gd")
+
+@export_group("Pathfinding")
+@export_range(0.1, 2.0, 0.1) var path_refresh_interval: float = 0.5
+@export_range(1.0, 6.0, 0.5) var path_search_padding: float = 3.0
+
+var _path := PackedVector3Array()
+var _path_index: int = 0
+var _path_time_left: float = 0.0
+var _boarding_origin: Vector3
+var _last_target: Vector3
+
 @export var walk_speed: float = 2.0
 @export var boarding_distance: float = 0.5
 @export var max_boarding_distance: float = 3.0
 @export var destination_id: StringName
-@export var is_mission_passenger: bool = false
 
 @onready var visual = $PassengerVisual
 @onready var marker_visual = $MarkerVisual
@@ -19,81 +30,90 @@ var nearby_jeepney: CharacterBody3D = null
 
 var waiting_position: Vector3
 var returning_to_wait: bool = false
+var _exit_vehicle: CharacterBody3D = null
+
 
 func _ready():
+	add_to_group("MinimapPassengers")
 	waiting_position = global_position
 	visual.play_animation("idle_down")
 
+func _reset_path() -> void:
+	_path.clear()
+	_path_index = 0
+	_path_time_left = 0.0
+
 func walk_to_jeepney(target_jeepney: CharacterBody3D):
 	jeepney = target_jeepney
+	_boarding_origin = jeepney.global_position
+
+	returning_to_wait = false
+	_reset_path()
+
 	walking = true
 	walking_to_destination = false
-
 	marker_visual.hide()
 
 func walk_to_destination(target_position: Vector3):
 	destination_target = target_position
+
+	returning_to_wait = false
+	_reset_path()
+
 	walking = true
 	walking_to_destination = true
 	can_board = false
-
 	marker_visual.hide()
 
-func _physics_process(_delta):
-
-	# Cancel boarding if the Jeepney drives too far away.
-	if walking and not walking_to_destination and not returning_to_wait and jeepney != null:
-		var distance_to_jeepney = global_position.distance_to(
-			jeepney.boarding_point.global_position
-		)
-
-		if distance_to_jeepney > max_boarding_distance:
+func _physics_process(delta):
+	_update_disembark_collision()
+	# A walking detour must not count as the jeepney driving away.
+	if walking and not walking_to_destination and not returning_to_wait:
+		if not is_instance_valid(jeepney):
 			cancel_boarding()
 			return
 
+		if (
+			jeepney.global_position.distance_to(_boarding_origin)
+			> max_boarding_distance
+		):
+			cancel_boarding()
+			return
 
-	# Start boarding once the nearby Jeepney stops.
-	if not walking and nearby_jeepney != null:
+	# Start boarding once the nearby jeepney stops.
+	if not walking and is_instance_valid(nearby_jeepney):
 		if nearby_jeepney.velocity.length() <= 0.1:
-			print("Jeepney stopped. Passenger boarding!")
 			walk_to_jeepney(nearby_jeepney)
-
 
 	if not walking:
 		velocity = Vector3.ZERO
 		return
 
-
-	# Decide where the passenger should walk.
 	var target_position: Vector3
 
 	if returning_to_wait:
 		target_position = waiting_position
-
 	elif walking_to_destination:
 		target_position = destination_target
-
 	else:
 		if jeepney == null:
 			return
 
 		target_position = jeepney.boarding_point.global_position
 
-
-	# Calculate direction AFTER choosing the target.
 	var direction = target_position - global_position
 	direction.y = 0.0
 
-
-	# Only board / disappear once the target is actually reached.
-	if direction.length() <= boarding_distance:
-
+	# Being close is insufficient if an obstacle separates us from the target.
+	if (
+		direction.length() <= boarding_distance
+		and Pathfinder.has_line_of_sight(self, target_position)
+	):
 		if returning_to_wait:
 			returning_to_wait = false
 			walking = false
 			velocity = Vector3.ZERO
 			visual.play_animation("idle_down")
-			
 			marker_visual.show()
 
 		elif walking_to_destination:
@@ -104,15 +124,52 @@ func _physics_process(_delta):
 
 		return
 
+	_path_time_left -= delta
 
-	# Walk toward the target.
-	direction = direction.normalized()
+	if (
+		_path_time_left <= 0.0
+		or target_position.distance_to(_last_target) > 0.25
+	):
+		_path = Pathfinder.find_path(
+			self,
+			target_position,
+			boarding_distance,
+			path_search_padding
+		)
+		_path_index = 0
+		_path_time_left = path_refresh_interval
+		_last_target = target_position
 
-	velocity.x = direction.x * walk_speed
-	velocity.z = direction.z * walk_speed
+	while _path_index < _path.size():
+		var step := _path[_path_index] - global_position
+		step.y = 0.0
 
-	update_walk_animation(direction)
+		var tolerance := 0.08
 
+		if _path_index == _path.size() - 1:
+			tolerance = minf(0.02, boarding_distance * 0.05)
+
+		if step.length() > tolerance:
+			break
+
+		_path_index += 1
+
+	if _path_index >= _path.size():
+		# Wait and retry instead of pushing against the obstruction.
+		velocity = Vector3.ZERO
+		visual.play_animation("idle_down")
+		return
+
+	var next_step := _path[_path_index] - global_position
+	next_step.y = 0.0
+
+	var step_speed := minf(
+		walk_speed,
+		next_step.length() / maxf(delta, 0.001)
+	)
+
+	velocity = next_step.normalized() * step_speed
+	update_walk_animation(next_step)
 	move_and_slide()
 
 
@@ -141,7 +198,6 @@ func board_jeepney():
 	jeepney.add_passenger(
 	destination_id,
 	visual.get_appearance(),
-	is_mission_passenger
 	)
 	
 	var lines: Array[String] = [
@@ -164,14 +220,6 @@ func reach_destination():
 	velocity = Vector3.ZERO
 
 	print("Passenger reached destination!")
-	print("Mission passenger: ", is_mission_passenger)
-	
-	if is_mission_passenger:	
-		var mission_manager = get_tree().get_first_node_in_group("MissionManager")
-		
-		if mission_manager:
-			mission_manager.complete_mission()
-
 	queue_free()
 
 
@@ -189,8 +237,53 @@ func _on_area_3d_body_exited(body):
 
 
 func cancel_boarding():
+	_reset_path()
+	velocity = Vector3.ZERO
+
 	jeepney = null
 	walking = true
 	returning_to_wait = true
 
 	marker_visual.hide()
+
+func prepare_disembarkation(source_vehicle: CharacterBody3D) -> void:
+	_exit_vehicle = source_vehicle
+
+	add_collision_exception_with(source_vehicle)
+	source_vehicle.add_collision_exception_with(self)
+
+
+func _update_disembark_collision() -> void:
+	if not is_instance_valid(_exit_vehicle):
+		_exit_vehicle = null
+		return
+
+	# Check whether the passenger is fully clear of the source jeepney.
+	var body_shape: CollisionShape3D = $CollisionShape3D
+	var query := PhysicsShapeQueryParameters3D.new()
+
+	query.shape = body_shape.shape
+	query.transform = body_shape.global_transform
+	query.margin = 0.08
+	query.collision_mask = _exit_vehicle.collision_layer
+	query.exclude = [get_rid()]
+
+	var space := get_world_3d().direct_space_state
+
+	for hit in space.intersect_shape(query, 64):
+		if hit["rid"] == _exit_vehicle.get_rid():
+			return
+
+	_clear_disembark_collision()
+
+
+func _clear_disembark_collision() -> void:
+	if is_instance_valid(_exit_vehicle):
+		remove_collision_exception_with(_exit_vehicle)
+		_exit_vehicle.remove_collision_exception_with(self)
+
+	_exit_vehicle = null
+
+
+func _exit_tree() -> void:
+	_clear_disembark_collision()

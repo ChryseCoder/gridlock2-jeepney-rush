@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cm032lddc1rhd" path="res://2D (Legacy Gridlock)/Assets/Models/gltf/trafficlight_C.gltf" id="1_ol2vb"]
 [ext_resource type="Script" uid="uid://d1cndyboy05hj" path="res://3D/Scripts/Environment/TrafficLight.gd" id="1_otd5u"]
+[ext_resource type="Texture2D" uid="uid://dr6dwg4rkgavb" path="res://3D/Assets/Images/Icons/Traffic/signal_stop.svg" id="3_ldnnc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nm7ev"]
 size = Vector3(0.060546875, 0.7184448, 0.060546875)
@@ -48,3 +49,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_aqk8r")
 transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094885, 2.7845154, 0.2904539)
 mesh = SubResource("CylinderMesh_4fp7u")
 surface_material_override/0 = SubResource("StandardMaterial3D_jsm5q")
+
+[node name="SignalIndicator" type="Sprite3D" parent="traffic_light" unique_id=1086738564]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.81, 3.4, 0.29)
+pixel_size = 0.0125
+billboard = 1
+texture = ExtResource("3_ldnnc")

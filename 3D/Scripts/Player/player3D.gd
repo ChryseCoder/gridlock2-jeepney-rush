@@ -10,6 +10,7 @@ extends CharacterBody3D
 @export_group("Fuel")
 @export var max_fuel: float = 100.0
 @export var fuel_drain_rate: float = 1
+const REFUEL_STOP_EPSILON: float = 0.01
 
 @export_group("Turning Dynamics")
 @export var turn_accel: float = 10.0
@@ -24,6 +25,19 @@ extends CharacterBody3D
 @export var passenger_scene: PackedScene
 @export var arrow_scene: PackedScene
 @export var arrow_container: Control
+
+@export_group("Collision Dialogue")
+@export_range(0.0, 10.0, 0.5) var collision_dialogue_cooldown: float = 4.0
+
+const COLLISION_REACTION_LINES: Array[String] = [
+	"Dahan-dahan naman, manong!",
+	"Ano ba 'yan, manong?",
+	"Ingat naman po!",
+	"Manong, may pasahero kayo!"
+]
+
+var _collision_dialogue_time_left: float = 0.0
+var _was_touching_obstacle: bool = false
 
 var passengers: Array[Dictionary] = []
 var destination_arrows: Dictionary = {}
@@ -58,6 +72,8 @@ func _physics_process(delta: float) -> void:
 	var input_turn = Input.get_action_strength("steer_right") - Input.get_action_strength("steer_left")
 		
 	if speed < 0: current_gear = 1
+	
+	_try_refuel(delta)
 	
 	# --- Fuel drain ---
 	if fuel > 0:
@@ -100,10 +116,7 @@ func _physics_process(delta: float) -> void:
 
 	# --- Natural Friction ---
 	else:
-		if speed > 0:
-			speed -= friction * 0.2 * delta
-		elif speed < 0:
-			speed += friction * 0.2 * delta
+		speed = move_toward(speed, 0.0, friction * 0.2 * delta)
 
 	# Clamp max and reverse speeds
 	speed = clamp(speed, -max_speed * 0.4, max_speed)
@@ -137,6 +150,7 @@ func _physics_process(delta: float) -> void:
 
 	# Calculate how strongly the Jeepney hit an obstacle.
 	var strongest_impact: float = 0.0
+	var touching_obstacle: bool = false
 
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
@@ -146,6 +160,7 @@ func _physics_process(delta: float) -> void:
 		normal.y = 0.0
 
 		if normal.length_squared() > 0.001:
+			touching_obstacle = true
 			normal = normal.normalized()
 
 			var impact = -velocity_before_move.dot(normal)
@@ -153,13 +168,64 @@ func _physics_process(delta: float) -> void:
 
 	# Reduce the Jeepney's actual driving speed after impact.
 	if strongest_impact > 0.1:
-		var remaining_speed = maxf(abs(speed) - strongest_impact, 0.0)
+		var remaining_speed = maxf(
+			abs(speed) - strongest_impact,
+			0.0
+		)
 		speed = signf(speed) * remaining_speed
+
+	# Apply one penalty when a new obstacle contact begins.
+	if strongest_impact > 0.1 and touching_obstacle and not _was_touching_obstacle:
+		var mission_timer = get_tree().get_first_node_in_group(
+			"MissionTimer"
+		)
+
+		if mission_timer:
+			mission_timer.apply_penalty(&"collision")
+
+	_update_collision_dialogue(strongest_impact, touching_obstacle, delta)
 
 	# Keep the Jeepney at its original height.
 	global_position.y = locked_y
 
-func add_passenger(destination_id: StringName, appearance: Dictionary, is_mission_passenger: bool):
+
+func _update_collision_dialogue(
+	impact: float,
+	touching_obstacle: bool,
+	delta: float
+) -> void:
+	_collision_dialogue_time_left = maxf(
+		_collision_dialogue_time_left - delta,
+		0.0
+	)
+
+	# One reaction per contact, not every physics frame against a wall.
+	var new_collision := touching_obstacle and not _was_touching_obstacle
+	_was_touching_obstacle = touching_obstacle
+
+	if not new_collision or impact <= 0.1:
+		return
+
+	if passengers.is_empty() or _collision_dialogue_time_left > 0.0:
+		return
+
+	_collision_dialogue_time_left = collision_dialogue_cooldown
+
+	# Equal probability for either line, regardless of passenger count.
+	var lines: Array[String] = [
+		COLLISION_REACTION_LINES.pick_random()
+	]
+
+	var screen_size := get_viewport().get_visible_rect().size
+	var dialog_position := Vector2(
+		screen_size.x / 2.0,
+		screen_size.y - 120.0
+	)
+
+	DialogueManager.start_dialog(dialog_position, lines)
+
+
+func add_passenger(destination_id: StringName, appearance: Dictionary):
 	var arrow = null
 
 	if destination_arrows.has(destination_id):
@@ -175,7 +241,6 @@ func add_passenger(destination_id: StringName, appearance: Dictionary, is_missio
 	passengers.append({
 		"destination_id": destination_id,
 		"appearance": appearance,
-		"is_mission_passenger": is_mission_passenger
 	})
 
 	passenger_count = passengers.size()
@@ -199,10 +264,16 @@ func release_passengers(destination: Node3D):
 
 		if passenger_data["destination_id"] == destination.destination_id:
 			var passenger = passenger_scene.instantiate()
-			passenger.is_mission_passenger = passenger_data["is_mission_passenger"]
-			get_tree().current_scene.add_child(passenger)
 
-			passenger.global_position = $PassengerExitPoint.global_position
+			# Position and protect the passenger before entering the physics world.
+			var level := get_tree().current_scene as Node3D
+
+			passenger.position = level.to_local(
+				$PassengerExitPoint.global_position
+			)
+			passenger.prepare_disembarkation(self)
+
+			level.add_child(passenger)
 
 			passenger.get_node("PassengerVisual").set_appearance(
 				passenger_data["appearance"]
@@ -214,6 +285,11 @@ func release_passengers(destination: Node3D):
 			
 			passengers.remove_at(index)
 			passenger_count = passengers.size()
+# Award once, after this passenger leaves the onboard manifest.
+			var mission_timer = get_tree().get_first_node_in_group("MissionTimer")
+
+			if mission_timer:
+				mission_timer.award_passenger_dropoff()
 
 			print("Passenger released! Remaining passengers: ", passenger_count)
 
@@ -251,3 +327,36 @@ func update_destination_activation():
 				break
 
 		destination.set_destination_active(has_passenger)
+
+
+# Refuel Block ------------------------------------------------------
+func is_stopped_for_refueling() -> bool:
+	var horizontal_velocity := Vector2(velocity.x, velocity.z)
+
+	return (
+		absf(speed) <= REFUEL_STOP_EPSILON
+		and horizontal_velocity.length_squared() <= REFUEL_STOP_EPSILON ** 2
+		and not Input.is_action_pressed("accelerate")
+		and not Input.is_action_pressed("brake")
+	)
+
+
+func refuel(amount: float) -> float:
+	if amount <= 0.0 or not is_stopped_for_refueling():
+		return 0.0
+
+	var previous_fuel := fuel
+	fuel = clampf(fuel + amount, 0.0, max_fuel)
+
+	return fuel - previous_fuel
+
+
+func _try_refuel(delta: float) -> void:
+	if not is_stopped_for_refueling():
+		return
+
+	for area in get_tree().get_nodes_in_group("RefuelingAreas"):
+		# Overlapping areas must not multiply the refueling rate.
+		if area.try_refuel(self, delta):
+			break
+#-----------------------------------------------------------------
