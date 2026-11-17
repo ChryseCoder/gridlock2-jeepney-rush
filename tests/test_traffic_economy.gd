@@ -169,6 +169,7 @@ func run() -> void:
 	# Move the player close to the illegal pickup; physics syncs visibility queries.
 	game_player.global_position = passenger.global_position + Vector3(1, 0, 0)
 	await frames(2)
+	passenger.legal_pickup = false
 	passenger.walk_to_jeepney(game_player)
 	check(session.has_active_encounters(), "illegal passenger inspector setting triggers nearby enforcer")
 	root.get_node("DialogueManager").cancel_dialogue()

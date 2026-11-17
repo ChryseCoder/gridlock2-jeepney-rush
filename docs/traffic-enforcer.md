@@ -6,7 +6,7 @@ Implemented on `Test`. `mark` is unchanged by this implementation.
 
 Run `3D/Scenes/World/GameMap.tscn` or press Play in the main menu.
 
-- The passenger going to **North Terminal** has **Legal Pickup** disabled. The other pickup is legal.
+- Both sample pickups are legal. To test illegal pickup enforcement, disable **Legal Pickup** on a passenger in the Inspector.
 - **School** has **Legal Dropoff** disabled. North Terminal is legal.
 - `TrafficEnforcers/PickupEnforcer` watches the pickup area. `SchoolEnforcer` watches School.
 - Stopping for an illegal pickup or starting an illegal drop-off triggers the nearest idle enforcer with range and line of sight. An illegal stop without a witness carries no penalty.

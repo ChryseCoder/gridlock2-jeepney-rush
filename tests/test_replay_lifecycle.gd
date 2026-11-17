@@ -23,6 +23,7 @@ func frames(count: int) -> void:
 
 func load_level() -> Node:
 	change_scene_to_file(LEVEL)
+	await scene_changed
 	await frames(4)
 	current_scene.process_mode = Node.PROCESS_MODE_DISABLED
 	return current_scene
@@ -86,6 +87,7 @@ func run() -> void:
 	level.get_node("MissionManager").complete_mission()
 	check(paused and session.violation_points == 1, "completion retains points until a new run or next level")
 	level.get_node("HUD/LevelResults")._on_next_pressed()
+	await scene_changed
 	await frames(4)
 	level = current_scene
 	level.process_mode = Node.PROCESS_MODE_DISABLED
@@ -96,6 +98,7 @@ func run() -> void:
 	level.get_node("MissionManager").next_level_scene = LEVEL
 	level.get_node("MissionManager").complete_mission()
 	level.get_node("HUD/LevelResults")._on_next_pressed()
+	await scene_changed
 	await frames(4)
 	level = current_scene
 	level.process_mode = Node.PROCESS_MODE_DISABLED
@@ -103,6 +106,7 @@ func run() -> void:
 	await start_ticket(level)
 	var discarded_box = dialogue.text_box
 	level.get_node("HUD/PauseMenu")._on_retry_button_pressed()
+	await scene_changed
 	await frames(4)
 	level = current_scene
 	level.process_mode = Node.PROCESS_MODE_DISABLED
@@ -112,8 +116,10 @@ func run() -> void:
 
 	# Returning to the menu and pressing Play starts a fresh campaign.
 	level.get_node("HUD/PauseMenu")._on_main_menu_button_pressed()
+	await scene_changed
 	await frames(4)
 	current_scene._on_play_button_pressed()
+	await scene_changed
 	await frames(4)
 	level = current_scene
 	level.process_mode = Node.PROCESS_MODE_DISABLED
