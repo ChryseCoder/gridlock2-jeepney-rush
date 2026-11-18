@@ -38,6 +38,8 @@
 [ext_resource type="PackedScene" path="res://3D/Scenes/HUD/EconomyHUD.tscn" id="41_economy"]
 [ext_resource type="PackedScene" path="res://3D/Scenes/Menu/LevelResults.tscn" id="42_results"]
 
+[ext_resource type="PackedScene" path="res://3D/Scenes/NPC/PedestrianSystem.tscn" id="43_pedestrians"]
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lxtvu"]
 sky_top_color = Color(0.31409365, 0.5585264, 0.9870283, 1)
 sky_horizon_color = Color(0.7205386, 0.7738968, 0.8720223, 1)
@@ -955,5 +957,17 @@ transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 260, 2.2354736, -416)
 [node name="SchoolEnforcer" parent="TrafficEnforcers" unique_id=722726996 instance=ExtResource("40_enforcer")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 258.02026, 2.2354736, -211.28484)
 whistle_sound = ExtResource("37_6n616")
+
+[node name="PickupPedestrians" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("43_pedestrians")]
+position = Vector3(258.8, 2.2354736, -418)
+camera = NodePath("../Camera3D")
+
+[node name="SchoolPedestrians" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("43_pedestrians")]
+position = Vector3(264, 2.2354736, -211)
+camera = NodePath("../Camera3D")
+
+[node name="WestPedestrians" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("43_pedestrians")]
+position = Vector3(-328, 2.2354736, -373)
+camera = NodePath("../Camera3D")
 
 [editable path="HUD/Minimap"]
