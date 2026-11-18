@@ -17,13 +17,17 @@ var _pause_left := 0.0
 var _blocked_time := 0.0
 var _height := 0.0
 var simulation_active := false
+var _constrain_to_segment := false
 
 func _ready() -> void:
 	add_to_group("AmbientPedestrians")
 	visual.configure_appearance(randomize_appearance, body_sprite_frames, outfit_sprite_frames, hair_sprite_frames, outfit_tint)
 	set_simulation_active(false)
 
-func configure(points: PackedVector3Array, start_index: int, direction: int) -> void:
+func configure(points: PackedVector3Array, start_index: int, direction: int, constrain_to_segment: bool = false) -> void:
+	_constrain_to_segment = constrain_to_segment
+	_pause_left = 0.0
+	_blocked_time = 0.0
 	_points = points
 	_direction = direction
 	global_position = points[start_index]
@@ -63,6 +67,10 @@ func _physics_process(delta: float) -> void:
 	var previous := global_position
 	move_and_slide()
 	global_position.y = _height
+	if _constrain_to_segment:
+		var on_sidewalk := Geometry3D.get_closest_point_to_segment(global_position, _points[0], _points[1])
+		if global_position.distance_squared_to(on_sidewalk) > 0.0004:
+			global_position = previous
 	if global_position.distance_squared_to(previous) < 0.00001:
 		_blocked_time += delta
 	else:

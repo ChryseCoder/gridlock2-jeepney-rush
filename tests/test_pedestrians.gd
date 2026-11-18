@@ -97,12 +97,8 @@ func run() -> void:
 	await scene_changed
 	await frames(5)
 	var level = current_scene
-	var total := 0
-	for name in ["PickupPedestrians", "SchoolPedestrians", "WestPedestrians"]:
-		var population: int = level.get_node(name).pedestrians.size()
-		print("MAP POPULATION ", name, ": ", population)
-		total += population
-	check(total > 0 and total <= 12, "GameMap contains a bounded ambient population")
+	var population = level.get_node("SidewalkPopulation")
+	check(population.pedestrians.size() > 0 and population.pedestrians.size() <= 40, "GameMap contains a bounded streamed sidewalk population")
 	check(level.get_node("MissionManager").remaining_mission_passengers == 2, "ambient population leaves mission objectives unchanged")
 	check(root.get_node("GameSession").earnings == 0 and root.get_node("GameSession").violation_points == 0, "ambient population does not award money or violations")
 	level.free()
