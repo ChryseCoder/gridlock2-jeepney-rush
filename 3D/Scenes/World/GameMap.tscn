@@ -1806,6 +1806,143 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 274.81573, 2, -151.50024)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8313293, 0.54999995, 2.5350037)
 shape = SubResource("BoxShape3D_spb7i")
 
+[node name="IntersectionController6" parent="TrafficLights" unique_id=912708965 node_paths=PackedStringArray("north_light", "east_light", "west_light", "north_stop_zone", "east_stop_zone", "west_stop_zone") instance=ExtResource("5_w3tim")]
+north_light = NodePath("north_traffic_light6")
+east_light = NodePath("east_traffic_light6")
+west_light = NodePath("west_traffic_light6")
+north_stop_zone = NodePath("north_stop_zone6")
+east_stop_zone = NodePath("east_stop_zone6")
+west_stop_zone = NodePath("west_stop_zone6")
+
+[node name="north_traffic_light6" type="StaticBody3D" parent="TrafficLights/IntersectionController6" unique_id=621682323 node_paths=PackedStringArray("red_lens", "yellow_lens", "green_lens", "signal_indicator")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 135.3691, 2, -151.40688)
+script = ExtResource("6_wo0vt")
+red_lens = NodePath("red_lens")
+yellow_lens = NodePath("yellow_lens")
+green_lens = NodePath("green_lens")
+signal_indicator = NodePath("SignalIndicator")
+
+[node name="trafficlight_C2" parent="TrafficLights/IntersectionController6/north_traffic_light6" unique_id=1688543842 instance=ExtResource("7_spb7i")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 0, 0.06146598)
+
+[node name="trafficlightC2_collision" type="CollisionShape3D" parent="TrafficLights/IntersectionController6/north_traffic_light6" unique_id=154593715]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 1.077301, 0.06146598)
+shape = SubResource("BoxShape3D_xlwa8")
+
+[node name="green_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/north_traffic_light6" unique_id=684888307]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094884, 2.3823547, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_v50gu")
+
+[node name="yellow_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/north_traffic_light6" unique_id=2112541773]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094887, 2.5829163, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_bobrl")
+
+[node name="red_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/north_traffic_light6" unique_id=1346665794]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094885, 2.7845154, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_2f5bb")
+
+[node name="SignalIndicator" type="Sprite3D" parent="TrafficLights/IntersectionController6/north_traffic_light6" unique_id=1485778090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24804688, 3.4000003, 1.3535156)
+pixel_size = 0.0125
+billboard = 1
+texture = ExtResource("9_3q6c2")
+
+[node name="north_stop_zone6" type="Area3D" parent="TrafficLights/IntersectionController6" unique_id=1570834910]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 137.46054, 2, -151.39082)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TrafficLights/IntersectionController6/north_stop_zone6" unique_id=1135470165]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9613037, 0.54999995, -4.101532)
+shape = SubResource("BoxShape3D_wo0vt")
+
+[node name="west_traffic_light6" type="StaticBody3D" parent="TrafficLights/IntersectionController6" unique_id=289234929 node_paths=PackedStringArray("red_lens", "yellow_lens", "green_lens", "signal_indicator")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 134.92949, 2, -140.29692)
+script = ExtResource("6_wo0vt")
+red_lens = NodePath("red_lens")
+yellow_lens = NodePath("yellow_lens")
+green_lens = NodePath("green_lens")
+signal_indicator = NodePath("SignalIndicator")
+
+[node name="trafficlight_C2" parent="TrafficLights/IntersectionController6/west_traffic_light6" unique_id=321361231 instance=ExtResource("7_spb7i")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 0, 0.06146598)
+
+[node name="trafficlightC2_collision" type="CollisionShape3D" parent="TrafficLights/IntersectionController6/west_traffic_light6" unique_id=1226380202]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 1.077301, 0.06146598)
+shape = SubResource("BoxShape3D_xlwa8")
+
+[node name="green_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/west_traffic_light6" unique_id=1636499512]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094884, 2.3823547, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_v50gu")
+
+[node name="yellow_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/west_traffic_light6" unique_id=486943169]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094887, 2.5829163, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_bobrl")
+
+[node name="red_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/west_traffic_light6" unique_id=355347499]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094885, 2.7845154, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_2f5bb")
+
+[node name="SignalIndicator" type="Sprite3D" parent="TrafficLights/IntersectionController6/west_traffic_light6" unique_id=907306816]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09738159, 3.4000003, 1.3127289)
+pixel_size = 0.0125
+billboard = 1
+texture = ExtResource("9_3q6c2")
+
+[node name="west_stop_zone6" type="Area3D" parent="TrafficLights/IntersectionController6" unique_id=802987258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 129.48079, 2, -144.05684)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TrafficLights/IntersectionController6/west_stop_zone6" unique_id=52277281]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8313293, 0.54999995, 2.5350037)
+shape = SubResource("BoxShape3D_spb7i")
+
+[node name="east_traffic_light6" type="StaticBody3D" parent="TrafficLights/IntersectionController6" unique_id=561737587 node_paths=PackedStringArray("red_lens", "yellow_lens", "green_lens", "signal_indicator")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 142.46828, 2, -150.18132)
+script = ExtResource("6_wo0vt")
+red_lens = NodePath("red_lens")
+yellow_lens = NodePath("yellow_lens")
+green_lens = NodePath("green_lens")
+signal_indicator = NodePath("SignalIndicator")
+
+[node name="trafficlight_C2" parent="TrafficLights/IntersectionController6/east_traffic_light6" unique_id=1332393677 instance=ExtResource("7_spb7i")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 0, 0.06146598)
+
+[node name="trafficlightC2_collision" type="CollisionShape3D" parent="TrafficLights/IntersectionController6/east_traffic_light6" unique_id=1589465737]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.17787933, 1.077301, 0.06146598)
+shape = SubResource("BoxShape3D_xlwa8")
+
+[node name="green_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/east_traffic_light6" unique_id=1620590171]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094884, 2.3823547, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_v50gu")
+
+[node name="yellow_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/east_traffic_light6" unique_id=955969080]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094887, 2.5829163, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_bobrl")
+
+[node name="red_lens" type="MeshInstance3D" parent="TrafficLights/IntersectionController6/east_traffic_light6" unique_id=974743847]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, -0.16, 0, 0.16, -6.993822e-09, -1.8094885, 2.7845154, 0.2904539)
+mesh = SubResource("CylinderMesh_os6ma")
+surface_material_override/0 = SubResource("StandardMaterial3D_2f5bb")
+
+[node name="SignalIndicator" type="Sprite3D" parent="TrafficLights/IntersectionController6/east_traffic_light6" unique_id=957052074]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09738159, 3.4000003, 1.3127289)
+pixel_size = 0.0125
+billboard = 1
+texture = ExtResource("9_3q6c2")
+
+[node name="east_stop_zone6" type="Area3D" parent="TrafficLights/IntersectionController6" unique_id=1291792198]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 145.07649, 2, -150.92688)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TrafficLights/IntersectionController6/east_stop_zone6" unique_id=1906623158]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8313293, 0.54999995, 2.5350037)
+shape = SubResource("BoxShape3D_spb7i")
+
 [node name="LargeRoadGridMap" type="GridMap" parent="." unique_id=915054577]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh_library = ExtResource("4_3fjsm")
